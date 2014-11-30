@@ -4,15 +4,19 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 
 
-from registration.forms import UserForm, UserProfileForm
+from registration.forms import UserForm
+from profiles.forms import ProfileForm
+from profiles.slugify import unique_slugify
 
 
 def register(request):
     registered = False
 
+    # Messy to include profile stuff here
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
-        profile_form = UserProfileForm(data=request.POST)
+
+        profile_form = ProfileForm(data=request.POST)
 
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
@@ -21,6 +25,7 @@ def register(request):
 
             profile = profile_form.save(commit=False)
             profile.user = user
+            unique_slugify(profile, user.username)
             profile.save()
 
             registered = True
@@ -29,7 +34,7 @@ def register(request):
             print(user_form.errors, profile_form.errors)
     else:
         user_form = UserForm()
-        profile_form = UserProfileForm()
+        profile_form = ProfileForm()
 
     return render(request,
                   'registration/register.html',

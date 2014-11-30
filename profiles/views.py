@@ -1,3 +1,17 @@
-from django.shortcuts import render
+from django.views.generic import UpdateView, DetailView
+from django.core.urlresolvers import reverse
 
-# Create your views here.
+from profiles.models import Profile
+
+
+class ProfileDetailView(DetailView):
+    model = Profile
+
+
+class ProfileUpdateView(UpdateView):
+    model = Profile
+    fields = ('wishlist', 'avoid')
+
+    def get_success_url(self):
+        url = reverse('profile', kwargs={'slug': self.object.slug})
+        return url

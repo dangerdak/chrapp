@@ -11,6 +11,10 @@ urlpatterns = patterns('',
         TemplateView.as_view(template_name='index.html'),
         name='home'),
 
+    url(r'^profile/',
+        include('profiles.urls'),
+        name='profiles'),
+
     url(r'^register/$',
         'registration.views.register',
         name='register'),

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>User: {{ profile.user.username }}</h1>
+<p>Wishlist: {{ profile.wishlist }}</p>
+<p>Avoid: {{ profile.avoid }}</p>
+
+
+{% endblock content %}
