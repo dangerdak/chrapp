@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<head>
+	<title>ChrApp</title>
+</head>
+<body>
+	<h1>
+		ChrApp
+	</h1>
+	{% block content %}
+	{% endblock content %}
+	<footer>
+	{% if user.is_authenticated %}
+	<a href="{% url 'logout' %}">Logout</a>
+	{% else %}
+	<a href="{% url 'login' %}">Login</a>
+	<a href="{% url 'register' %}">Register</a>
+	{% endif %}
+	</footer>
+</body>
+</html>
