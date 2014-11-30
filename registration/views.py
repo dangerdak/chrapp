@@ -4,6 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 
 
+from guardian.shortcuts import assign_perm
+
+
 from registration.forms import UserForm
 from profiles.forms import ProfileForm
 from profiles.slugify import unique_slugify
@@ -27,6 +30,10 @@ def register(request):
             profile.user = user
             unique_slugify(profile, user.username)
             profile.save()
+
+            # Give user permission to view and edit own profile
+            assign_perm('profiles.view_profile', user, profile)
+            assign_perm('profiles.change_profile', user, profile)
 
             registered = True
 

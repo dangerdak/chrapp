@@ -6,10 +6,10 @@ urlpatterns = patterns('',
     # Profile view
     url(r'(?P<slug>\w*)/$',
         ProfileDetailView.as_view(),
-        name='profile'),
+        name='alt-profile'),
 
     # Update profile
     url(r'(?P<slug>\w*)/update$',
         ProfileUpdateView.as_view(),
-        name='profile-update'),
+        name='alt-profile-update'),
 )

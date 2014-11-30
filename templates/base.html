@@ -10,8 +10,9 @@
 	{% endblock content %}
 	<footer>
 	{% if user.is_authenticated %}
+	<p>Logged in as: {{ user.username }}.
 	<a href="{% url 'logout' %}">Logout</a>
-	Profile
+	</p>
 	{% else %}
 	<a href="{% url 'login' %}">Login</a>
 	<a href="{% url 'register' %}">Register</a>

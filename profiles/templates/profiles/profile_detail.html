@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>User: {{ profile.user.username }}</h1>
+{% if user.is_authenticated %}
+<h2>User: {{ profile.user.username }}</h2>
 <p>Wishlist: {{ profile.wishlist }}</p>
 <p>Avoid: {{ profile.avoid }}</p>
+{% else %}
+{% endif %}
 
+<a href="{% url 'profile-update' slug=profile.slug %}">Update</a>
 
 {% endblock content %}

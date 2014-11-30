@@ -12,6 +12,9 @@ class Profile(models.Model):
                                  null=True)
     slug = models.SlugField(unique=True)
 
+    class Meta:
+        permissions = (('view_profile', 'Can view profile'),)
+
 
     def __str__(self):
         return self.user.username
