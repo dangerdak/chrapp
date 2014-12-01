@@ -37,6 +37,10 @@ def register(request):
 
             registered = True
 
+            # Log user in after registration
+            user = authenticate(username=request.POST['username'], password=request.POST['password'])
+            login(request, user)
+
         else:
             print(user_form.errors, profile_form.errors)
     else:
