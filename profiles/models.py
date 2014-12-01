@@ -20,6 +20,7 @@ class Profile(models.Model):
                                     null=True)
 
     recipient = models.OneToOneField('self',
+                                     related_name='santa',
                                      blank=True,
                                      null=True)
 

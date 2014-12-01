@@ -29,12 +29,18 @@ urlpatterns = patterns('',
         include(admin.site.urls)),
 
     # Profile view for each user
-    url(r'^(?P<slug>\w*)$',
+    url(r'^(?P<slug>\w*)/$',
         ProfileDetailView.as_view(),
         name='profile'),
 
+    # Send email
+    url(r'^send-update-email/$',
+        'profiles.views.send_update_email',
+        name='send-update-email'),
+
+
     # Update view
-    url(r'^(?P<slug>\w*)/update$',
+    url(r'^(?P<slug>\w*)/update/$',
         ProfileUpdateView.as_view(),
         name='profile-update'),
 

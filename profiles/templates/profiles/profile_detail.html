@@ -11,5 +11,6 @@
 {% endif %}
 
 <a href="{% url 'profile-update' slug=profile.slug %}">Update</a>
+<a href="{% url 'send-update-email' %}">Email updated wishlist</a>
 
 {% endblock content %}
