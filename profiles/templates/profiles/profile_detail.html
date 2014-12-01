@@ -3,10 +3,8 @@
 {% block content %}
 {% if user.is_authenticated %}
 	<h2>User: {{ profile.user.username }}</h2>
-	<p>Wishlist: {{ profile.wishlist }}</p>
-	{% if profile.recipient %}
-			<p>Recipient: {{ profile.recipient }}</p>
-	{% else %}
+	<p>My wishlist: {{ profile.wishlist }}</p>
+	{% if not profile.recipient %}
 		<ul>Prefer: {% for pref in profile.prefer.all %}<li>{{ pref }}</li>{% endfor %}</ul>
 		<ul>Avoid: {% for avoid in profile.avoid.all %}<li>{{ avoid }}</li>{% endfor %}</ul>
 	{% endif %}
