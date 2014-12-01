@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.views.generic import TemplateView
 
-from profiles.views import ProfileDetailView, ProfileUpdateView
+from profiles.views import ProfileUpdateView
 
 
 urlpatterns = patterns('',
@@ -28,11 +28,6 @@ urlpatterns = patterns('',
     url(r'^admin/',
         include(admin.site.urls)),
 
-    # Profile view for each user
-    url(r'^(?P<slug>\w*)/$',
-        ProfileDetailView.as_view(),
-        name='profile'),
-
     # Send email
     url(r'^send-update-email/$',
         'profiles.views.send_update_email',
@@ -40,12 +35,8 @@ urlpatterns = patterns('',
 
 
     # Update view
-    url(r'^(?P<slug>\w*)/update/$',
+    url(r'^updateprofile/$',
         ProfileUpdateView.as_view(),
-        name='profile-update'),
-
-    # Alternative profile URLs
-    url(r'^profile/',
-        include('profiles.urls')),
+        name='update-profile'),
 
 )

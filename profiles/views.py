@@ -1,31 +1,23 @@
-from django.views.generic import UpdateView, DetailView
+from django.views.generic import UpdateView
 from django.core.urlresolvers import reverse
-
-from guardian.mixins import PermissionRequiredMixin
+from django.core.mail import send_mail, BadHeaderError
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 
 from profiles.models import Profile
 
 
-class ProfileDetailView(PermissionRequiredMixin, DetailView):
-    model = Profile
-
-    permission_required = 'profiles.view_profile'
-
-
-
-class ProfileUpdateView(PermissionRequiredMixin, UpdateView):
-    model = Profile
+class ProfileUpdateView(UpdateView):
     fields = ('wishlist', 'prefer', 'avoid')
 
-    permission_required = 'profiles.change_profile'
+
+    # Override this so view can be called without object id or slug
+    def get_object(self):
+        return get_object_or_404(Profile, pk=self.request.user.profile.id)
 
     def get_success_url(self):
-        url = reverse('profile', kwargs={'slug': self.object.slug})
+        url = reverse('home')
         return url
-
-from django.core.mail import send_mail, BadHeaderError
-from django.http import HttpResponse
-from django.shortcuts import render
 
 
 def send_update_email(request):
@@ -38,4 +30,4 @@ def send_update_email(request):
         send_mail(subject, message, from_email, [to_email])
     except BadHeaderError:
         return HttpResponse('Invalid header found.')
-    return render(request, reverse('profile', kwargs={'slug': request.user.profile.slug}), {})
+    return HttpResponseRedirect(reverse('home'))
