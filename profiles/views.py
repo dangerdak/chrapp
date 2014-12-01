@@ -14,7 +14,7 @@ class ProfileDetailView(PermissionRequiredMixin, DetailView):
 
 class ProfileUpdateView(PermissionRequiredMixin, UpdateView):
     model = Profile
-    fields = ('wishlist', 'avoid')
+    fields = ('wishlist', 'prefer', 'avoid')
 
     permission_required = 'profiles.change_profile'
 
