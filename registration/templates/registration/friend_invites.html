@@ -8,7 +8,9 @@ Invite friends
 Enter your friend's name and email:
 <form method="post" action=".">
 	{% csrf_token %}
-	{{ form }}
-	<input type="submit" value="Send Invite" />
+	{% for form in formset %}
+	<p>{{ forloop.counter}}. {{ form }}</p>
+	{% endfor %}
+	<input type="submit" value="Send Invites" />
 </form>
 {% endblock content %}

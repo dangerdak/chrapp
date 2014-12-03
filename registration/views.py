@@ -11,8 +11,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from guardian.shortcuts import assign_perm
 
 
-from registration.forms import UserForm
-from registration.forms import InviteForm
+from registration.forms import UserForm, InviteFormSet
 from registration.models import Invitation
 from profiles.forms import ProfileForm
 from profiles.slugify import unique_slugify
@@ -107,22 +106,32 @@ def user_logout(request):
 @login_required
 def invite(request):
     if request.method == 'POST':
-        form = InviteForm(request.POST)
-        if form.is_valid():
-            invitation = Invitation(
-                to_name=form.cleaned_data['to_name'],
-                to_email=form.cleaned_data['to_email'],
-                key=User.objects.make_random_password(20),
-                sender=request.user
-                )
-            invitation.save()
-            invitation.send()
+        formset = InviteFormSet(request.POST)
+        if formset.is_valid():
+            instances = formset.save(commit=False)
+
+            for instance in instances:
+                instance.key = User.objects.make_random_password(20)
+                instance.sender = request.user
+                instance.save()
+                instance.send()
+
+            # invitation = Invitation(
+            #     to_name=formset.cleaned_data['to_name'],
+            #     to_email=formset.cleaned_data['to_email'],
+            #     key=User.objects.make_random_password(20),
+            #     sender=request.user
+            #     )
+            # invitation.save()
+            # invitation.send()
             return HttpResponseRedirect(reverse('invite'))
     else:
-        form = InviteForm()
+        previous_invites = Invitation.objects.all()
+        formset = InviteFormSet(queryset=Invitation.objects.none())
 
     variables = RequestContext(request, {
-        'form': form
+        'formset': formset,
+        'previous_invites': previous_invites,
         })
     return render_to_response('registration/friend_invites.html', variables)
 
