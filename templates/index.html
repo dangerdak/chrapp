@@ -8,9 +8,12 @@
 	<a href="{% url 'update-profile' %}">Update</a>
 	<a href="{% url 'send-update-email' %}">Send to Santa</a>
 	{% if user.profile.recipient %}
+	<button type="button" class="toggle">Show/hide recipient info</button>
+	<div class="recipient-info">
 		<p>Recipient: {{ user.profile.recipient }}</p>
 		<p>Recipient's wishlist: {{ user.profile.recipient.wishlist }}</p>
 		<a href="{% url 'send-anon-email' %}" title="Send an anonymous email">Email {{ user.profile.recipient.user.username }}</a>
+	</div>
 
 	{% else %}
 		<ul>Prefer: {% for pref in user.profile.prefer.all %}<li>{{ pref }}</li>{% endfor %}</ul>

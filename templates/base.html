@@ -1,6 +1,17 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <head>
-	<title>ChrApp</title>
+	<title>
+	{% block title %}
+	ChrApp
+	{% endblock title %}
+	</title>
+
+	<link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+	{% block extra_css %}
+	{% endblock extra_css %}
 </head>
 <body>
 	<h1>
