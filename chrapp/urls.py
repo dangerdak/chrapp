@@ -25,6 +25,14 @@ urlpatterns = patterns('',
         'registration.views.user_logout',
         name='logout'),
 
+    url(r'^invite/$',
+        'registration.views.invite',
+        name='invite'),
+
+    url(r'^accept/(\w+)/$',
+        'registration.views.accept',
+        name='accept'),
+
     url(r'^admin/',
         include(admin.site.urls)),
 
@@ -32,7 +40,6 @@ urlpatterns = patterns('',
     url(r'^send-update-email/$',
         'profiles.views.send_update_email',
         name='send-update-email'),
-
 
     # Update view
     url(r'^updateprofile/$',

@@ -1,13 +1,19 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
+from django.template import RequestContext
+from django.shortcuts import render_to_response, get_object_or_404
 
 
 from guardian.shortcuts import assign_perm
 
 
 from registration.forms import UserForm
+from registration.forms import InviteForm
+from registration.models import Invitation
 from profiles.forms import ProfileForm
 from profiles.slugify import unique_slugify
 
@@ -37,8 +43,20 @@ def register(request):
 
             registered = True
 
+            # Invitation stuff
+            if 'invitation' in request.session:
+                # Retrieve invitation object
+                invitation = Invitation.objects.get(
+                    id=request.session['invitation'])
+
+                # Delete the used invitation from the database and session
+                invitation.delete()
+                del request.session['invitaion']
+
             # Log user in after registration
-            user = authenticate(username=request.POST['username'], password=request.POST['password'])
+            user = authenticate(
+                username=request.POST['username'],
+                password=request.POST['password'])
             login(request, user)
 
         else:
@@ -84,3 +102,32 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+
+@login_required
+def invite(request):
+    if request.method == 'POST':
+        form = InviteForm(request.POST)
+        if form.is_valid():
+            invitation = Invitation(
+                to_name=form.cleaned_data['to_name'],
+                to_email=form.cleaned_data['to_email'],
+                key=User.objects.make_random_password(20),
+                sender=request.user
+                )
+            invitation.save()
+            invitation.send()
+            return HttpResponseRedirect(reverse('invite'))
+    else:
+        form = InviteForm()
+
+    variables = RequestContext(request, {
+        'form': form
+        })
+    return render_to_response('registration/friend_invites.html', variables)
+
+
+def accept(request, key):
+    invitation = get_object_or_404(Invitation, key__exact=key)
+    request.session['invitation'] = invitation.id
+    return HttpResponseRedirect(reverse('register'))
