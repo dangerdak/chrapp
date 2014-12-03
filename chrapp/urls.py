@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.views.generic import TemplateView
 
-from profiles.views import ProfileUpdateView
+from profiles.views import ProfileUpdateView, ContactView
 
 
 urlpatterns = patterns('',
@@ -37,9 +37,14 @@ urlpatterns = patterns('',
         include(admin.site.urls)),
 
     # Send email
-    url(r'^send-update-email/$',
+    url(r'^update-email/$',
         'profiles.views.send_update_email',
         name='send-update-email'),
+
+    # Send anonymous email
+    url(r'^anon-email/$',
+        ContactView.as_view(),
+        name='send-anon-email'),
 
     # Update view
     url(r'^updateprofile/$',
