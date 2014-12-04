@@ -3,6 +3,7 @@ from django.views.generic.edit import FormView
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse, HttpResponseRedirect
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404, render
 
 from profiles.models import Profile
@@ -22,8 +23,12 @@ class ProfileView(TemplateView):
             context['avoids'] = self.request.user.profile.avoid.all
             if self.request.user.profile.partner:
                 context['partner'] = self.request.user.profile.partner
-            elif self.request.user.profile.partner_of:
-                context['partner'] = self.request.user.profile.partner_of
+            else:
+                try:
+                    context['partner'] = self.request.user.profile.partner_of
+                except ObjectDoesNotExist:
+                    context['partner'] = None
+
 
             if self.request.user.profile.recipient:
                 recipient = self.request.user.profile.recipient
@@ -37,11 +42,14 @@ class ProfileView(TemplateView):
                     context['recipient_partner_username'] = partner.user.username
                     context['recipient_partner_santa'] = partner.santa
 
-                elif self.request.user.profile.recipient.partner_of:
-                    partner = self.request.user.profile.recipient.partner_of
-                    context['recipient_partner'] = partner
-                    context['recipient_partner_username'] = partner.user.username
-                    context['recipient_partner_santa'] = partner.santa
+                else:
+                    try:
+                        partner = self.request.user.profile.recipient.partner_of
+                        context['recipient_partner'] = partner
+                        context['recipient_partner_username'] = partner.user.username
+                        context['recipient_partner_santa'] = partner.santa
+                    except ObjectDoesNotExist:
+                        context['recipient_partner'] = None
         return context
 
 
