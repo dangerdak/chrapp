@@ -53,7 +53,8 @@ def register(request):
                 del request.session['invitation']
             else:
                 # If user was not invited, make admin TODO something
-                user.profile.admin = True
+                profile.admin = True
+                profile.save()
 
             # Check if user is an admin
             if user.profile.admin:
