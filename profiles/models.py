@@ -29,7 +29,7 @@ class Profile(models.Model):
                                    blank=True,
                                    null=True)
     avoid_partner = models.BooleanField(default=False,
-                                        help_text="If you check this box, it is very unlikely that you will be assigned your partner.")
+                                        help_text="If you check this box, you will definitely not be assigned your partner.")
 
     recipient = models.OneToOneField('self',
                                      related_name='santa',
