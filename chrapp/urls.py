@@ -36,6 +36,11 @@ urlpatterns = patterns('',
     url(r'^admin/',
         include(admin.site.urls)),
 
+    # Update view
+    url(r'^updateprofile/$',
+        ProfileUpdateView.as_view(),
+        name='update-profile'),
+
     # Send email
     url(r'^update-email/$',
         'profiles.views.send_update_email',
@@ -46,9 +51,9 @@ urlpatterns = patterns('',
         ContactView.as_view(),
         name='send-anon-email'),
 
-    # Update view
-    url(r'^updateprofile/$',
-        ProfileUpdateView.as_view(),
-        name='update-profile'),
+    # Assign secret santa pairs
+    url(r'^assign/$',
+        'pairings.views.assign_pairs',
+        name='assign'),
 
 )

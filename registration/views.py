@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.models import Permission, User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
@@ -50,7 +50,21 @@ def register(request):
 
                 # Delete the used invitation from the database and session
                 invitation.delete()
-                del request.session['invitaion']
+                del request.session['invitation']
+            else:
+                # If user was not invited, make admin TODO something
+                user.profile.admin = True
+
+            # Check if user is an admin
+            if user.profile.admin:
+                permission_invites = Permission.objects.get(
+                    codename='send_invites')
+                permission_assign = Permission.objects.get(
+                    codename='assign_pairs')
+                user.user_permissions.add(
+                    permission_invites,
+                    permission_assign
+                    )
 
             # Log user in after registration
             user = authenticate(
@@ -103,7 +117,7 @@ def user_logout(request):
     return HttpResponseRedirect('/')
 
 
-@login_required
+@permission_required('profiles.send_invites')
 def invite(request):
     if request.method == 'POST':
         formset = InviteFormSet(request.POST)
@@ -116,14 +130,6 @@ def invite(request):
                 instance.save()
                 instance.send()
 
-            # invitation = Invitation(
-            #     to_name=formset.cleaned_data['to_name'],
-            #     to_email=formset.cleaned_data['to_email'],
-            #     key=User.objects.make_random_password(20),
-            #     sender=request.user
-            #     )
-            # invitation.save()
-            # invitation.send()
             return HttpResponseRedirect(reverse('invite'))
     else:
         previous_invites = Invitation.objects.all()

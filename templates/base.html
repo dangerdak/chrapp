@@ -21,7 +21,7 @@
 	{% endblock content %}
 	<footer>
 	{% if user.is_authenticated %}
-	<p>Logged in as: <a href="{% url 'home' %}">{{ user.username }}</a>.
+	<p>Logged in as: <a href="{% url 'home' %}">{{ user.username }}</a>{% if user.profile.admin %} (admin){% endif %}.
 	<a href="{% url 'logout' %}">Logout</a>
 	</p>
 	{% else %}

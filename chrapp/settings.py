@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'guardian',
     'registration',
     'profiles',
+    'pairings',
 )
 
 

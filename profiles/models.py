@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
-
+    admin = models.BooleanField(default=False,
+                                editable=False)
     wishlist = models.TextField(blank=True)
 
     avoid = models.ManyToManyField('self',
@@ -26,10 +27,12 @@ class Profile(models.Model):
 
     slug = models.SlugField(unique=True)
 
-
     class Meta:
-        permissions = (('view_profile', 'Can view profile'),)
-
+        permissions = (
+            ('view_profile', 'Can view profile'),
+            ('send_invites', 'Can send invites'),
+            ('assign_pairs', 'Can assign Santa-recipient pairs'),
+            )
 
     def __str__(self):
         return self.user.username
