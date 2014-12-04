@@ -1,8 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from django.views.generic import TemplateView
 
-from profiles.views import ProfileUpdateView, ContactView
+from profiles.views import ProfileUpdateView, ContactView, ProfileView
 
 
 urlpatterns = patterns('',
@@ -10,7 +9,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'chrapp.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
     url(r'^$',
-        TemplateView.as_view(template_name='index.html'),
+        ProfileView.as_view(),
         name='home'),
 
     url(r'^register/$',

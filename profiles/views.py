@@ -1,12 +1,54 @@
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, TemplateView
 from django.views.generic.edit import FormView
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 
 from profiles.models import Profile
 from profiles.forms import ContactForm
+
+
+class ProfileView(TemplateView):
+    template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileView, self).get_context_data(**kwargs)
+        if self.request.user.is_authenticated():
+            context['is_admin'] = self.request.user.profile.admin
+            context['username'] = self.request.user.username
+            context['wishlist'] = self.request.user.profile.wishlist
+            context['prefers'] = self.request.user.profile.prefer.all
+            context['avoids'] = self.request.user.profile.avoid.all
+            if self.request.user.profile.recipient:
+                context['recipient'] = self.request.user.profile.recipient
+                context['recipient_wishlist'] = self.request.user.profile.recipient.wishlist
+                context['recipient_username'] = self.request.user.profile.recipient.user.username
+                if self.request.user.profile.recipient.partner:
+                    context['recipient_partner'] = self.request.user.profile.recipient.partner
+                    context['recipient_partner_username'] = self.request.user.profile.recipient.partner.user.username
+                    context['recipient_partner_santa'] = self.request.user.profile.recipient.partner.santa
+                elif self.request.user.profile.recipient.partner_of:
+                    context['recipient_partner'] = self.request.user.profile.recipient.partner_of
+                    context['recipient_partner_username'] = self.request.user.profile.recipient.partner_of.user.username
+                    context['recipient_partner_santa'] = self.request.user.profile.recipient.partner_of.santa
+        return context
+
+
+    #def get(self, request):
+    #    return render(request, self.template_name, {
+    #        'is_admin': request.user.profile.admin,
+    #        'username': request.user.username,
+    #        'wishlist': request.user.profile.wishlist,
+    #        'prefers': request.user.profile.prefer.all,
+    #        'avoids': request.user.profile.avoid.all,
+    #        'recipient': request.user.profile.recipient,
+    #        'recipient_wishlist': request.user.profile.recipient.wishlist,
+    #        'recipient_username': request.user.profile.recipient.user.username,
+    #        'recipient_partner': request.user.profile.recipient.partner,
+
+    #        })
+
 
 
 class ProfileUpdateView(UpdateView):
