@@ -8,6 +8,9 @@
 		{% endif %}
 	<h2>User: {{ username }}</h2>
 	<p>My wishlist: {{ wishlist }}</p>
+	{% if partner %}
+	<p>My partner: {{ partner.user.username }}</p>
+	{% endif %}
 	<a href="{% url 'update-profile' %}">Update</a>
 	<a href="{% url 'send-update-email' %}">Send to Santa</a>
 	<hr>

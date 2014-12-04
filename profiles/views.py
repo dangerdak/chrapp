@@ -20,6 +20,10 @@ class ProfileView(TemplateView):
             context['wishlist'] = self.request.user.profile.wishlist
             context['prefers'] = self.request.user.profile.prefer.all
             context['avoids'] = self.request.user.profile.avoid.all
+            if self.request.user.profile.partner:
+                context['partner'] = self.request.user.profile.partner
+            elif self.request.user.profile.partner_of:
+                context['partner'] = self.request.user.profile.partner_of
 
             if self.request.user.profile.recipient:
                 recipient = self.request.user.profile.recipient
@@ -73,7 +77,7 @@ class ContactView(FormView):
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
-        form.send_email('dingo', self.request.user.profile.recipient.user.email)
+        form.send_email('santa', self.request.user.profile.recipient.user.email)
         return super(ContactView, self).form_valid(form)
 
 
