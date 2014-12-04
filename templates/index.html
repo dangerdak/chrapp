@@ -18,6 +18,7 @@
 		{% if recipient_partner %}
 		<p>Recipient's partner: {{ recipient_partner_username }}</p>
 		<p>{{ recipient_partner }}'s Santa: {{ recipient_partner_santa.user.username }}</p>
+		<a href="{% url 'send-anon-partner-email' %}" title="Send an anonymous email">Email {{ recipient_partner_santa.user.username }}</a>
 		{% endif %}
 
 	{% else %}

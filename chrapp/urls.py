@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-from profiles.views import ProfileUpdateView, ContactView, ProfileView
+from profiles.views import ProfileUpdateView, ContactView, ContactPartnerView, ProfileView
 
 
 urlpatterns = patterns('',
@@ -49,6 +49,11 @@ urlpatterns = patterns('',
     url(r'^anon-email/$',
         ContactView.as_view(),
         name='send-anon-email'),
+
+    # Send anonymous email to recipients partners santa
+    url(r'^anon-partner-email/$',
+        ContactPartnerView.as_view(),
+        name='send-anon-partner-email'),
 
     # Assign secret santa pairs
     url(r'^assign/$',

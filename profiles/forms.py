@@ -14,10 +14,8 @@ class ContactForm(forms.Form):
     subject = forms.CharField(max_length=100)
     message = forms.CharField(widget=forms.Textarea)
 
-    def send_email(self, to_email):
+    def send_email(self, from_email, to_email):
         subject = self.cleaned_data['subject']
         message = self.cleaned_data['message']
-        # to_email = self.request.user.recipient.user.email
-        from_email = 'santa'
 
         send_mail(subject, message, from_email, [to_email])

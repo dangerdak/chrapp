@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{% endblock title %}
+
+{% block content %}
+<p>Send an anonymous email to the Santa of your gift recipient's partner:</p>
+<form id="email_form" method="post" action="{% url 'send-anon-partner-email' %}">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<input type="submit" name="submit" value="Send" />
+</form>
+{% endblock content %}

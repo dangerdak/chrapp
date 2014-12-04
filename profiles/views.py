@@ -20,35 +20,25 @@ class ProfileView(TemplateView):
             context['wishlist'] = self.request.user.profile.wishlist
             context['prefers'] = self.request.user.profile.prefer.all
             context['avoids'] = self.request.user.profile.avoid.all
+
             if self.request.user.profile.recipient:
-                context['recipient'] = self.request.user.profile.recipient
-                context['recipient_wishlist'] = self.request.user.profile.recipient.wishlist
-                context['recipient_username'] = self.request.user.profile.recipient.user.username
+                recipient = self.request.user.profile.recipient
+                context['recipient'] = recipient
+                context['recipient_wishlist'] = recipient.wishlist
+                context['recipient_username'] = recipient.user.username
+
                 if self.request.user.profile.recipient.partner:
-                    context['recipient_partner'] = self.request.user.profile.recipient.partner
-                    context['recipient_partner_username'] = self.request.user.profile.recipient.partner.user.username
-                    context['recipient_partner_santa'] = self.request.user.profile.recipient.partner.santa
+                    partner = self.request.user.profile.recipient.partner
+                    context['recipient_partner'] = partner
+                    context['recipient_partner_username'] = partner.user.username
+                    context['recipient_partner_santa'] = partner.santa
+
                 elif self.request.user.profile.recipient.partner_of:
-                    context['recipient_partner'] = self.request.user.profile.recipient.partner_of
-                    context['recipient_partner_username'] = self.request.user.profile.recipient.partner_of.user.username
-                    context['recipient_partner_santa'] = self.request.user.profile.recipient.partner_of.santa
+                    partner = self.request.user.profile.recipient.partner_of
+                    context['recipient_partner'] = partner
+                    context['recipient_partner_username'] = partner.user.username
+                    context['recipient_partner_santa'] = partner.santa
         return context
-
-
-    #def get(self, request):
-    #    return render(request, self.template_name, {
-    #        'is_admin': request.user.profile.admin,
-    #        'username': request.user.username,
-    #        'wishlist': request.user.profile.wishlist,
-    #        'prefers': request.user.profile.prefer.all,
-    #        'avoids': request.user.profile.avoid.all,
-    #        'recipient': request.user.profile.recipient,
-    #        'recipient_wishlist': request.user.profile.recipient.wishlist,
-    #        'recipient_username': request.user.profile.recipient.user.username,
-    #        'recipient_partner': request.user.profile.recipient.partner,
-
-    #        })
-
 
 
 class ProfileUpdateView(UpdateView):
@@ -83,5 +73,15 @@ class ContactView(FormView):
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
-        form.send_email(self.request.user.profile.recipient.user.email)
+        form.send_email('dingo', self.request.user.profile.recipient.user.email)
         return super(ContactView, self).form_valid(form)
+
+
+class ContactPartnerView(FormView):
+    template_name = 'contact-partner.html'
+    form_class = ContactForm
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        form.send_email('santa cousin', self.request.user.profile.recipient.partner.santa.user.email)
+        return super(ContactPartnerView, self).form_valid(form)
