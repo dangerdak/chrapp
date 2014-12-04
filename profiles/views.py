@@ -10,7 +10,7 @@ from profiles.forms import ContactForm
 
 
 class ProfileUpdateView(UpdateView):
-    fields = ('wishlist', 'prefer', 'avoid')
+    fields = ('wishlist', 'partner', 'avoid_partner', 'prefer', 'avoid')
 
     # Override this so view can be called without object id or slug
     def get_object(self):

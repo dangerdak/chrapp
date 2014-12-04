@@ -12,13 +12,24 @@ class Profile(models.Model):
                                    symmetrical=False,
                                    related_name='avoided_by',
                                    blank=True,
-                                   null=True)
+                                   null=True,
+                                   help_text="You may still be assigned one of these people.")
 
     prefer = models.ManyToManyField('self',
                                     symmetrical=False,
                                     related_name='prefered_by',
                                     blank=True,
-                                    null=True)
+                                    null=True,
+                                    help_text="You may still not be assigned any of these people.")
+
+    # TODO This is not ideal
+    # Doesn't represent the relationship well (asymmetrical)
+    partner = models.OneToOneField('self',
+                                   related_name='partner_of',
+                                   blank=True,
+                                   null=True)
+    avoid_partner = models.BooleanField(default=False,
+                                        help_text="If you check this box, it is very unlikely that you will be assigned your partner.")
 
     recipient = models.OneToOneField('self',
                                      related_name='santa',
