@@ -2,9 +2,28 @@
 
 {% block content %}
 <h2>Create New Group</h2>
-<form id="group_form" method="post">
+<form id="group_form" method="post" action=".">
 	{% csrf_token %}
+	<div>
 	{{ form.as_p }}
+	</div>
+	<fieldset>
+		<legend>Invite members</legend>
+		{{ invitation_form.management_form }}
+		{{ invitation_form.non_form_errors }}
+		{% for form in invitation_form %}
+			{{ form.id }}
+			<div class="inline {{ invitation_form.prefix }}">
+				{{ form.to_name.errors }}
+				{{ form.to_name.label_tag }}
+				{{ form.to_name }}
+				{{ form.to_email.errors }}
+				{{ form.to_email.label_tag }}
+				{{ form.to_email }}
+			</div>
+		{% endfor %}
+	</fieldset>
+
 	<input type="submit" name="submit" value="Create Group" />
 </form>
 {% endblock content %}

@@ -1,6 +1,8 @@
 from django import forms
 from django.core.mail import send_mail
+from django.forms.models import inlineformset_factory
 
+from registration.models import Invitation
 from profiles.models import Profile, GiftGroup
 
 
@@ -25,3 +27,6 @@ class GroupForm(forms.ModelForm):
     class Meta:
         model = GiftGroup
         fields = ['name']
+
+InvitationFormSet = inlineformset_factory(
+    GiftGroup, Invitation, fields=['to_name', 'to_email'])

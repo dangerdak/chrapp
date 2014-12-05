@@ -65,8 +65,8 @@ urlpatterns = patterns('',
         name='assign'),
 
     # Groups
-    url(r'^groups/$',
-        GroupCreateView.as_view(),
+    url(r'^groups/',
+        include('profiles.urls'),
         name='create-group'),
 
 )

@@ -5,9 +5,10 @@ from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404, render
+from django.contrib.auth.models import User
 
 from profiles.models import Profile, GiftGroup
-from profiles.forms import ContactForm
+from profiles.forms import ContactForm, GroupForm, InvitationFormSet
 
 
 class ProfileView(TemplateView):
@@ -107,7 +108,46 @@ class ContactPartnerView(FormView):
 class GroupCreateView(CreateView):
     model = GiftGroup
     fields = ['name', 'members']
+    form_class = GroupForm
     success_url = reverse_lazy('home')
+
+    def get(self, request, *args, **kwargs):
+        # TODO what's this for?
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        invitation_form = InvitationFormSet()
+        return self.render_to_response(
+            self.get_context_data(form=form,
+                                  invitation_form=invitation_form))
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        invitation_form = InvitationFormSet(self.request.POST)
+        if form.is_valid() and invitation_form.is_valid():
+            instances = invitation_form.save(commit=False)
+
+            for instance in instances:
+                instance.key = User.objects.make_random_password(20)
+                instance.sender = request.user
+                instance.send()
+
+            return self.form_valid(form, invitation_form)
+        else:
+            return self.form_invalid(form, invitation_form)
+
+    def form_valid(self, form, invitation_form):
+        self.object = form.save()
+        invitation_form.instance = self.object
+        invitation_form.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form, invitation_form):
+        return self.render_to_response(
+            self.get_context_data(form=form,
+                                  invitation_form=invitation_form))
 
 class GroupUpdateView(UpdateView):
     model = GiftGroup
