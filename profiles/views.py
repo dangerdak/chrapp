@@ -21,6 +21,11 @@ class ProfileView(TemplateView):
             context['wishlist'] = self.request.user.profile.wishlist
             context['prefers'] = self.request.user.profile.prefer.all
             context['avoids'] = self.request.user.profile.avoid.all
+            try:
+                context['santa'] = self.request.user.profile.santa
+            except ObjectDoesNotExist:
+                context['santa'] = None
+
             if self.request.user.profile.partner:
                 context['partner'] = self.request.user.profile.partner
             else:

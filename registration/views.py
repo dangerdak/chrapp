@@ -56,6 +56,15 @@ def register(request):
                 profile.admin = True
                 profile.save()
 
+            # Check if all invited people have registered
+            invites = Invitation.objects.all()
+            all_users = [u.username for u in User.objects.all()]
+            for invite in invites:
+                if invite.to_name in all_users:
+                    pass
+                else:
+                    break
+
             # Check if user is an admin
             if user.profile.admin:
                 permission_invites = Permission.objects.get(

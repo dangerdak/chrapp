@@ -12,7 +12,9 @@
 	<p>My partner: {{ partner.user.username }}</p>
 	{% endif %}
 	<a href="{% url 'update-profile' %}">Update</a>
+	{% if santa %}
 	<a href="{% url 'send-update-email' %}">Send to Santa</a>
+	{% endif %}
 	<hr>
 	{% if recipient %}
 		<p>Recipient: {{ recipient }}</p>
