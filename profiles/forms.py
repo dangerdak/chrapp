@@ -1,7 +1,7 @@
 from django import forms
 from django.core.mail import send_mail
 
-from profiles.models import Profile
+from profiles.models import Profile, GiftGroup
 
 
 class ProfileForm(forms.ModelForm):
@@ -19,3 +19,9 @@ class ContactForm(forms.Form):
         message = self.cleaned_data['message']
 
         send_mail(subject, message, from_email, [to_email])
+
+
+class GroupForm(forms.ModelForm):
+    class Meta:
+        model = GiftGroup
+        fields = ['name']

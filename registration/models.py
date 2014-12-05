@@ -5,12 +5,15 @@ from django.template.loader import get_template
 from django.template import Context
 from django.core.urlresolvers import reverse
 
+from profiles.models import GiftGroup
+
 
 class Invitation(models.Model):
     to_name = models.CharField(max_length=50)
     to_email = models.EmailField()
     sender = models.ForeignKey(User)
     key = models.CharField(max_length=20)
+    gift_group = models.ForeignKey(GiftGroup)
 
     def __str__(self):
         return 'From {}, to {}'.format(self.sender.username, self.to_email)

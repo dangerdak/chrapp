@@ -1,7 +1,11 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-from profiles.views import ProfileUpdateView, ContactView, ContactPartnerView, ProfileView
+from profiles.views import (ProfileUpdateView,
+                            ContactView,
+                            ContactPartnerView,
+                            ProfileView,
+                            GroupCreateView)
 
 
 urlpatterns = patterns('',
@@ -59,5 +63,10 @@ urlpatterns = patterns('',
     url(r'^assign/$',
         'pairings.views.assign_pairs',
         name='assign'),
+
+    # Groups
+    url(r'^groups/$',
+        GroupCreateView.as_view(),
+        name='create-group'),
 
 )

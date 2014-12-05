@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from registration.models import Invitation
-
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
@@ -49,3 +47,10 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class GiftGroup(models.Model):
+    name = models.CharField(max_length=100)
+    members = models.ManyToManyField(Profile,
+                                     blank=True,
+                                     null=True)

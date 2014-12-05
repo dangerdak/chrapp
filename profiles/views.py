@@ -1,4 +1,4 @@
-from django.views.generic import UpdateView, TemplateView
+from django.views.generic import UpdateView, TemplateView, CreateView
 from django.views.generic.edit import FormView
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.core.mail import send_mail, BadHeaderError
@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404, render
 
-from profiles.models import Profile
+from profiles.models import Profile, GiftGroup
 from profiles.forms import ContactForm
 
 
@@ -102,3 +102,14 @@ class ContactPartnerView(FormView):
     def form_valid(self, form):
         form.send_email('santa cousin', self.request.user.profile.recipient.partner.santa.user.email)
         return super(ContactPartnerView, self).form_valid(form)
+
+
+class GroupCreateView(CreateView):
+    model = GiftGroup
+    fields = ['name', 'members']
+    success_url = reverse_lazy('home')
+
+class GroupUpdateView(UpdateView):
+    model = GiftGroup
+    fields = ['name', 'members']
+    success_url = reverse_lazy('home')

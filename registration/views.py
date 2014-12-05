@@ -11,7 +11,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from guardian.shortcuts import assign_perm
 
 
-from registration.forms import UserForm, InviteFormSet
+from registration.forms import UserForm, InviteFormSet, GroupInviteFormSet
 from registration.models import Invitation
 from profiles.forms import ProfileForm
 from profiles.slugify import unique_slugify
@@ -157,10 +157,12 @@ def invite(request):
     else:
         previous_invites = Invitation.objects.all()
         formset = InviteFormSet(queryset=Invitation.objects.none())
+        groupformset = GroupInviteFormSet()
 
     variables = RequestContext(request, {
         'formset': formset,
         'previous_invites': previous_invites,
+        'groupformset': groupformset,
         })
     return render_to_response('registration/friend_invites.html', variables)
 
