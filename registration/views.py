@@ -48,8 +48,8 @@ def register(request):
                 invitation = Invitation.objects.get(
                     id=request.session['invitation'])
 
-                # Delete the used invitation from the database and session
-                invitation.delete()
+                # Delete the used invitation from the (database and) session
+                # invitation.delete()
                 del request.session['invitation']
             else:
                 # If user was not invited, make admin TODO something
@@ -85,7 +85,20 @@ def register(request):
         else:
             print(user_form.errors, profile_form.errors)
     else:
-        user_form = UserForm()
+        # TODO repetition checking for invite
+        if 'invitation' in request.session:
+            # Retrieve invitation object
+            invitation = Invitation.objects.get(
+                id=request.session['invitation'])
+
+            user_form = UserForm(initial={
+                'username': invitation.to_name,
+                'email': invitation.to_email})
+            user_form.fields['username'].widget.attrs['readonly'] = True
+            user_form.fields['email'].widget.attrs['readonly'] = True
+        else:
+            user_form = UserForm()
+
         profile_form = ProfileForm()
 
     return render(request,
