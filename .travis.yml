@@ -3,4 +3,6 @@ python:
     - "3.4"
 install:
     - "pip install -r requirements.txt"
-script: python core/pairings.py
+script:
+    - python core/pairings.py
+    - py.test
