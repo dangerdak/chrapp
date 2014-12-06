@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Your groups</h2>
+<ul>
+{% for group in object_list %}
+<li>
+	<a href="{% url 'membership-detail' group.slug %}">{{ group.name }}</a>
+	(Memberships/Invites: {{ group.members.count }}/{{ group.invitation_set.count }})<br>
+	Members:
+	<ul>
+		{% for member in group.members.all %}
+		<li>{{ member }}</li>
+		{% endfor %}
+	</ul>
+	Invites:
+	<ul>
+		{% for invite in group.invitation_set.all %}
+		<li>{{ invite.to_name }} ({{invite.to_email}})</li>
+		{% endfor %}
+	</ul>
+</li>
+{% endfor %}
+</ul>
+{% endblock content %}

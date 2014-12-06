@@ -28,9 +28,9 @@ urlpatterns = patterns('',
         'registration.views.user_logout',
         name='logout'),
 
-    url(r'^invite/$',
-        'registration.views.invite',
-        name='invite'),
+#    url(r'^invite/$',
+#        'registration.views.invite',
+#        name='invite'),
 
     url(r'^accept/(\w+)/$',
         'registration.views.accept',

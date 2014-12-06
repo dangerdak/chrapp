@@ -1,6 +1,6 @@
 Hi {{ to_name }},
 
-{{ sender }} has invited you to join a Secret Santa group on ChrApp,
+{{ sender }} has invited you to join the Secret Santa group {{ group }} on ChrApp,
 a website which allows you to easily organise Secret Santa with friends.
 
 To accept the invitation, follow the link below:

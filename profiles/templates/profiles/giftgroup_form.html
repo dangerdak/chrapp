@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Create New Group</h2>
+<h2>Create/Update Group</h2>
 <form id="group_form" method="post" action=".">
 	{% csrf_token %}
 	<div>
 	{{ form.as_p }}
 	</div>
+	{% if invitation_form %}
 	<fieldset>
 		<legend>Invite members</legend>
 		{{ invitation_form.management_form }}
@@ -23,7 +24,8 @@
 			</div>
 		{% endfor %}
 	</fieldset>
+	{% endif %}
 
-	<input type="submit" name="submit" value="Create Group" />
+	<input type="submit" name="submit" value="Submit" />
 </form>
 {% endblock content %}

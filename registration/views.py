@@ -11,8 +11,8 @@ from django.shortcuts import render_to_response, get_object_or_404
 from guardian.shortcuts import assign_perm
 
 
-from registration.forms import UserForm, InviteFormSet, GroupInviteFormSet
-from registration.models import Invitation
+from registration.forms import UserForm, InviteFormSet
+from profiles.models import Invitation, GiftGroup, Membership
 from profiles.forms import ProfileForm
 from profiles.slugify import unique_slugify
 
@@ -47,13 +47,16 @@ def register(request):
                 # Retrieve invitation object
                 invitation = Invitation.objects.get(
                     id=request.session['invitation'])
+                # Create membership of profile with group
+                m = Membership(profile=profile, giftgroup=invitation.gift_group)
+                m.save()
+
 
                 # Delete the used invitation from the (database and) session
                 # invitation.delete()
                 del request.session['invitation']
             else:
-                # If user was not invited, make admin TODO something
-                profile.admin = True
+                # If user was not invited
                 profile.save()
 
             # Check if all invited people have registered
@@ -64,17 +67,17 @@ def register(request):
                     pass
                 else:
                     break
-
-            # Check if user is an admin
-            if user.profile.admin:
-                permission_invites = Permission.objects.get(
-                    codename='send_invites')
-                permission_assign = Permission.objects.get(
-                    codename='assign_pairs')
-                user.user_permissions.add(
-                    permission_invites,
-                    permission_assign
-                    )
+# User no longer has admin property
+#            # Check if user is an admin
+#            if user.profile.admin:
+#                permission_invites = Permission.objects.get(
+#                    codename='send_invites')
+#                permission_assign = Permission.objects.get(
+#                    codename='assign_pairs')
+#                user.user_permissions.add(
+#                    permission_invites,
+#                    permission_assign
+#                    )
 
             # Log user in after registration
             user = authenticate(
@@ -141,28 +144,29 @@ def user_logout(request):
 
 
 @permission_required('profiles.send_invites')
-def invite(request):
+def invite(request, slug):
     if request.method == 'POST':
         formset = InviteFormSet(request.POST)
         if formset.is_valid():
             instances = formset.save(commit=False)
+            group = GiftGroup.objects.get(slug=slug)
 
             for instance in instances:
                 instance.key = User.objects.make_random_password(20)
                 instance.sender = request.user
+                instance.gift_group = group
                 instance.save()
                 instance.send()
 
-            return HttpResponseRedirect(reverse('invite'))
+            return HttpResponseRedirect(reverse('home'))
     else:
         previous_invites = Invitation.objects.all()
         formset = InviteFormSet(queryset=Invitation.objects.none())
-        groupformset = GroupInviteFormSet()
+        group = GiftGroup.objects.get(slug=slug)
 
     variables = RequestContext(request, {
         'formset': formset,
         'previous_invites': previous_invites,
-        'groupformset': groupformset,
         })
     return render_to_response('registration/friend_invites.html', variables)
 

@@ -2,8 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms.models import modelformset_factory, inlineformset_factory
 
-from registration.models import Invitation
-from profiles.models import GiftGroup
+from profiles.models import GiftGroup, Invitation
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -26,8 +25,8 @@ class InviteForm(forms.ModelForm):
             }
 
 InviteFormSet = modelformset_factory(
-        model = Invitation,
-        form=InviteForm,
-        extra=5)
+    model = Invitation,
+    form=InviteForm,
+    fields = ('to_name', 'to_email'),
+    extra=5)
 
-GroupInviteFormSet = inlineformset_factory(GiftGroup, Invitation)

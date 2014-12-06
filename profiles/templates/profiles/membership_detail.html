@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Your info for group {{ membership.giftgroup.name }}</h2>
+
+<p>Your wishlist: {{ membership.wishlist }}</p>
+{% if membership.recipient %}
+<p>Your recipient: {{ membership.recipient.user.username }}</p>
+{% else %}
+<p>
+Prefer: <ul>{% for prefer in membership.prefers %}<li>prefer</li>{% endfor %}</ul>
+Avoid: <ul>{% for avoid in membership.avoids %}<li>avoid</li>{% endfor %}</ul>
+Avoid partner? {% if membership.avoid_partner %}Yes{% else %}No{% endif %}
+</p>
+{% endif %}
+{% endblock content %}
