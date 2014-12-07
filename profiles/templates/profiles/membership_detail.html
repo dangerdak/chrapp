@@ -3,13 +3,17 @@
 {% block content %}
 <h2>Your info for group {{ membership.giftgroup.name }}</h2>
 
-<p>Your wishlist: {{ membership.wishlist }}</p>
+<p>Your wishlist: {{ membership.wishlist }}
+<a href="{% url 'update-membership' slug=membership.giftgroup.slug %}">Update</a>
+</p>
+<hr>
 {% if membership.recipient %}
 <p>Your recipient: {{ membership.recipient.user.username }}</p>
+<p>Your recipient's wishlist: {{ membership.wishlist}}</p>
 {% else %}
 <p>
-Prefer: <ul>{% for prefer in membership.prefers %}<li>prefer</li>{% endfor %}</ul>
-Avoid: <ul>{% for avoid in membership.avoids %}<li>avoid</li>{% endfor %}</ul>
+Prefer: <ul>{% for prefer in membership.prefer.all %}<li>{{ prefer }}</li>{% endfor %}</ul>
+Avoid: <ul>{% for avoid in membership.avoid.all %}<li>{{ avoid }}</li>{% endfor %}</ul>
 Avoid partner? {% if membership.avoid_partner %}Yes{% else %}No{% endif %}
 </p>
 {% endif %}

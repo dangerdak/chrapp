@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.models import User
 
 from profiles.models import Profile, GiftGroup, Membership
-from profiles.forms import ContactForm, GroupForm, InvitationFormSet
+from profiles.forms import ContactForm, GroupForm, InvitationFormSet, MembershipForm, MembershipPairedForm
 from profiles.slugify import unique_slugify
 
 
@@ -74,15 +74,37 @@ class ProfileUpdateView(UpdateView):
 class MembershipDetailView(DetailView):
     model = Membership
 
+    def get_object(self):
+        return get_object_or_404(
+            Membership,
+            giftgroup__slug=self.kwargs['slug'],
+            profile__user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super(MembershipDetailView, self).get_context_data(**kwargs)
+        return context
+
+class GroupDetailView(DetailView):
+    model = GiftGroup
+
 
 class MembershipUpdateView(UpdateView):
     model = Membership
-    fields = ('wishlist', 'avoid_partner', 'prefer', 'avoid')
+   # fields = ('wishlist', 'avoid_partner', 'prefer', 'avoid')
 
-# If want to show based on who's logged in instead of url
-#    # Override this so view can be called without object id or slug
-#    def get_object(self):
-#        return get_object_or_404(Profile, pk=self.request.user.profile.id)
+    # Override this so view can be called without object id or slug
+    def get_object(self):
+        return get_object_or_404(
+            Membership,
+            giftgroup__slug=self.kwargs['slug'],
+            profile__user=self.request.user)
+   # def get_object(self):
+   #     return get_object_or_404(Profile, pk=self.request.user.profile.id)
+    def get_form_class(self):
+        if self.object.recipient:
+            return MembershipPairedForm
+        else:
+            return MembershipForm
 
     def get_success_url(self):
         url = reverse('home')
@@ -126,7 +148,7 @@ class GroupCreateView(CreateView):
     model = GiftGroup
     fields = ['name', 'members']
     form_class = GroupForm
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('membership-list')
 
 #     def get(self, request, *args, **kwargs):
 #         # TODO what's this for?
@@ -137,36 +159,28 @@ class GroupCreateView(CreateView):
 #         return self.render_to_response(
 #             self.get_context_data(form=form,
 #                                   invitation_form=invitation_form))
-# 
-#     def post(self, request, *args, **kwargs):
-#         self.object = None
-#         form_class = self.get_form_class()
-#         form = self.get_form(form_class)
-#         invitation_form = InvitationFormSet(self.request.POST)
-#         if form.is_valid() and invitation_form.is_valid():
-#             instances = invitation_form.save(commit=False)
-# 
-#             for instance in instances:
-#                 instance.key = User.objects.make_random_password(20)
-#                 instance.sender = request.user
-#                 instance.send()
-# 
-#             unique_slugify(form, form.name)
-# 
-#             return self.form_valid(form, invitation_form)
-#         else:
-#             return self.form_invalid(form, invitation_form)
-# 
-#     def form_valid(self, form, invitation_form):
-#         self.object = form.save()
-#         invitation_form.instance = self.object
-#         invitation_form.save()
-#         return HttpResponseRedirect(self.get_success_url())
-# 
-#     def form_invalid(self, form, invitation_form):
-#         return self.render_to_response(
-#             self.get_context_data(form=form,
-#                                   invitation_form=invitation_form))
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        giftgroup = form.save()
+        profile = self.request.user.profile
+        m = Membership(profile=profile, giftgroup=giftgroup)
+        m.admin = True
+        m.save()
+        self.object = giftgroup
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form):
+        return self.render_to_response(
+            self.get_context_data(form=form))
 
 
 class GroupUpdateView(UpdateView):
@@ -183,3 +197,10 @@ class GroupListView(ListView):
         current_profile = get_object_or_404(
             Profile, user__username__exact=self.request.user.username)
         return current_profile.giftgroup_set.all()
+
+
+class MembershipListView(ListView):
+
+    def get_queryset(self):
+        return Membership.objects.filter(
+            profile__user__username=self.request.user.username)

@@ -23,15 +23,23 @@ class ContactForm(forms.Form):
 
 
 class MembershipForm(forms.ModelForm):
+    """Membership form for before pairs have been assigned."""
     class Meta:
         model = Membership
-        fields = ('wishlist', 'prefer', 'avoid')
+        fields = ['wishlist', 'avoid_partner', 'prefer', 'avoid']
+
+
+class MembershipPairedForm(forms.ModelForm):
+    """Membership form for after pairs have been assigned."""
+    class Meta:
+        model = Membership
+        fields = ['wishlist']
 
 
 class GroupForm(forms.ModelForm):
     class Meta:
         model = GiftGroup
-        fields = ['name', 'admin']
+        fields = ['name']
 
 InvitationFormSet = inlineformset_factory(
     GiftGroup, Invitation, fields=['to_name', 'to_email'])

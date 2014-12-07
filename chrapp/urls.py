@@ -5,6 +5,7 @@ from profiles.views import (ProfileUpdateView,
                             ContactView,
                             ContactPartnerView,
                             ProfileView,
+                            MembershipListView,
                             GroupCreateView)
 
 
@@ -13,7 +14,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'chrapp.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
     url(r'^$',
-        ProfileView.as_view(),
+        MembershipListView.as_view(),
         name='home'),
 
     url(r'^register/$',
@@ -59,14 +60,12 @@ urlpatterns = patterns('',
         ContactPartnerView.as_view(),
         name='send-anon-partner-email'),
 
-    # Assign secret santa pairs
-    url(r'^assign/$',
-        'pairings.views.assign_pairs',
-        name='assign'),
-
+#    # Users
+#    url(r'^(?P<username>\w+)/',
+#        include('profiles.url')),
+#
     # Groups
     url(r'^groups/',
-        include('profiles.urls'),
-        name='create-group'),
+        include('profiles.urls')),
 
 )

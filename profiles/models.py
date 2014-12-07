@@ -37,14 +37,11 @@ class GiftGroup(models.Model):
                                      null=True,
                                      through='Membership',
                                      through_fields=('giftgroup', 'profile'))
-    admin = models.ManyToManyField(Profile,
-                                   related_name='admin_of')
     slug = models.SlugField(unique=True)
 
     def save(self, *args, **kwargs):
         unique_slugify(self, self.name)
         super(GiftGroup, self).save(*args, **kwargs)
-
 
     def __str__(self):
         return self.name
@@ -85,8 +82,8 @@ class Membership(models.Model):
     profile = models.ForeignKey(Profile)
     giftgroup = models.ForeignKey(GiftGroup)
 
+    admin = models.BooleanField(default=False)
     wishlist = models.TextField(blank=True)
-    slug = models.SlugField(unique=True)
 
     avoid = models.ManyToManyField(Invitation,
                                    symmetrical=False,
@@ -110,9 +107,5 @@ class Membership(models.Model):
                                      blank=True,
                                      null=True)
 
-    def save(self, *args, **kwargs):
-        self.slug = self.giftgroup.slug
-        super(Membership, self).save(*args, **kwargs)
-
     def __str__(self):
-        return self.giftgroup.name + ' Membership'
+        return self.profile.user.username + 's membership in ' + self.giftgroup.name

@@ -4,12 +4,12 @@
 <ul>
 {% for group in object_list %}
 <li>
-	<a href="{% url 'membership-detail' group.slug %}">{{ group.name }}</a>
+	<a href="{% url 'group-detail' slug=group.slug %}">{{ group.name }}</a>
 	(Memberships/Invites: {{ group.members.count }}/{{ group.invitation_set.count }})<br>
 	Members:
 	<ul>
-		{% for member in group.members.all %}
-		<li>{{ member }}</li>
+		{% for profile in group.members.all %}
+		<li>{{ profile.user.username }}{% if profile.membership.admin %}(admin){% endif %}</li>
 		{% endfor %}
 	</ul>
 	Invites:

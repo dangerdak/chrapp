@@ -143,7 +143,6 @@ def user_logout(request):
     return HttpResponseRedirect('/')
 
 
-@permission_required('profiles.send_invites')
 def invite(request, slug):
     if request.method == 'POST':
         formset = InviteFormSet(request.POST)

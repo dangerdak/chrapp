@@ -10,7 +10,7 @@
 		<li>{{ membership.giftgroup.name }}</li>
 		{% endfor %}
 	{% else %}
-		<p>Create a new group.</p>
+	<p>Create a <a href="{% url 'create-group' %}">new group</a> to get started.</p>
 	{% endif %}
 {% else %}
 	<h2>Hello stranger, welcome to ChrApp.</h2>
