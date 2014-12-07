@@ -107,7 +107,8 @@ class MembershipUpdateView(UpdateView):
             return MembershipForm
 
     def get_success_url(self):
-        url = reverse('home')
+        url = reverse('membership-detail',
+                      kwargs={'slug': self.kwargs['slug']})
         return url
 
 def send_update_email(request):
