@@ -92,8 +92,9 @@ class MembershipDetailView(DetailView):
             partner_invite = Invitation.objects.get(id=member.recipient.partner.id)
             partner_profile = Profile.objects.get(user__username=partner_invite.to_name)
             context['recipient_partner_profile'] = partner_profile
-            partner_santa_profile = partner_profile.santa_memberships.get(giftgroup=member.giftgroup).profile
-            context['recipient_partner_santa_profile'] = partner_santa_profile
+            if partner_profile in member.giftgroup.members.all():
+                partner_santa_profile = partner_profile.santa_memberships.get(giftgroup=member.giftgroup).profile
+                context['recipient_partner_santa_profile'] = partner_santa_profile
         return context
 
 class GroupDetailView(DetailView):
@@ -164,7 +165,7 @@ class AnonContactView(FormView):
 
 class GroupCreateView(CreateView):
     model = GiftGroup
-    fields = ['name', 'members']
+    fields = ['name']
     form_class = GroupForm
     success_url = reverse_lazy('membership-list')
 
@@ -190,9 +191,17 @@ class GroupCreateView(CreateView):
     def form_valid(self, form):
         giftgroup = form.save()
         profile = self.request.user.profile
+        # Make group creator member and admin
         m = Membership(profile=profile, giftgroup=giftgroup)
         m.admin = True
         m.save()
+        # Also save false invitation for group creator
+        i = Invitation(to_name=self.request.user.username,
+                       to_email=self.request.user.email,
+                       sender=self.request.user,
+                       key='fakekey',
+                       gift_group=giftgroup)
+        i.save()
         self.object = giftgroup
         return HttpResponseRedirect(self.get_success_url())
 

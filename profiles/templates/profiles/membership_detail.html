@@ -14,6 +14,8 @@
 	<a href="{% url 'send-anon-email' to_profile_id=membership.recipient.id %}">Email {{ membership.recipient.user.username }}</a>
 	{% if recipient_partner_profile %}
 	<a href="{% url 'send-anon-email' to_profile_id=recipient_partner_profile.id %}">Email {{ membership.recipient.user.username }}'s partner</a>
+	{% endif %}
+	{% if recipient_partner_santa_profile %}
 	<a href="{% url 'send-anon-email' to_profile_id=recipient_partner_santa_profile.id %}">Email {{ membership.recipient.user.username }}'s partner's Santa</a> (useful e.g. if they want a joint present)
 	{% endif %}
 {% else %}

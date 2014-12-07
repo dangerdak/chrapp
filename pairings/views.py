@@ -8,6 +8,7 @@ from profiles.models import Profile, Membership, Invitation
 def assign_pairs(self, slug):
     members = Membership.objects.filter(giftgroup__slug=slug)
     data = serializers.serialize('python', members)
+    print(data)
     # Ensure all recipients set to None
     # to avoid not unique errors when applying matches
     keys = []
@@ -18,16 +19,18 @@ def assign_pairs(self, slug):
         member.save()
 
     convert(data, invitation_to_profile)
+    print(data)
 
     i = 0
     # Matching algorithm
     for member in data:
         member['fields']['recipient'] = keys[i]
         i += 1
-    for member in serializers.deserialize('python', data):
-        member.save()
 
     convert(data, profile_to_invitation)
+    print(data)
+    for member in serializers.deserialize('python', data):
+        member.save()
     return HttpResponseRedirect(reverse('home'))
 
 def convert(data, fcn):
@@ -39,7 +42,6 @@ def convert(data, fcn):
             avoid = fcn(avoid)
         for prefer in member['fields']['prefer']:
             prefer = fcn(prefer)
-        member.save()
 
 def profile_to_invitation(profile_id):
     """Return invitation id corresponding to given profile id."""
