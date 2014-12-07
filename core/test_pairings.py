@@ -21,6 +21,28 @@ def test_optimal_solution():
     for user in user_data:
         assert user['recipient'] == user['prefer'][0]
 
+def test_extra_fields():
+    user_data = [
+        {'name': 'Tom',
+         'partner': None,
+         'magic': 'Bus',
+         'avoid': ['Dick'],
+         'prefer': ['Harry']},
+        {'name': 'Dick',
+         'partner': None,
+         'fatal': 'Book',
+         'avoid': ['Harry'],
+         'prefer': ['Tom']},
+        {'name': 'Harry',
+         'partner': None,
+         'ice': 'Cream',
+         'avoid': ['Tom'],
+         'prefer': ['Dick']},
+    ]
+    fill_recipients(user_data)
+    for user in user_data:
+        assert user['recipient'] == user['prefer'][0]
+
 def test_forbidden():
     user_data = [
         {'name': 'Tom',
