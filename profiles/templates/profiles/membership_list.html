@@ -40,7 +40,7 @@
 	{% else %}
 	<p>You have no groups!</p>
 	{% endif %}
-	<a href="">Create New Group</a>
+	<a href="{% url 'create-group' %}">Create New Group</a>
 {% else %}
 	<h2>Hello stranger, welcome to ChrApp.</h2>
 {% endif %}
