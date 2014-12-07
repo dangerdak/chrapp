@@ -5,7 +5,7 @@
 
 {% block content %}
 <p>Send an anonymous email to your gift recipient:</p>
-<form id="email_form" method="post" action="{% url 'send-anon-email' %}">
+<form id="email_form" method="post" action=".">
 	{% csrf_token %}
 	{{ form.as_p }}
 	<input type="submit" name="submit" value="Send" />

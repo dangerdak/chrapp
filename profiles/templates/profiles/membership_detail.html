@@ -11,6 +11,7 @@
 {% if membership.recipient %}
 <p>Your recipient: {{ membership.recipient.user.username }}</p>
 <p>Your recipient's wishlist: {{ membership.wishlist}}</p>
+<a href="{% url 'send-anon-email' to_profile_id=membership.recipient.id %}">Email recipient</a>
 {% else %}
 <p>
 Prefer: <ul>{% for prefer in membership.prefer.all %}<li>{{ prefer }}</li>{% endfor %}</ul>

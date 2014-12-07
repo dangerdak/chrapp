@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
 from profiles.views import (ProfileUpdateView,
-                            ContactView,
+                            AnonContactView,
                             ContactPartnerView,
                             ProfileView,
                             MembershipListView,
@@ -51,14 +51,9 @@ urlpatterns = patterns('',
         name='send-update-email'),
 
     # Send anonymous email
-    url(r'^anon-email/$',
-        ContactView.as_view(),
+    url(r'^anon-email/(?P<to_profile_id>\w+)/$',
+        AnonContactView.as_view(),
         name='send-anon-email'),
-
-    # Send anonymous email to recipients partners santa
-    url(r'^anon-partner-email/$',
-        ContactPartnerView.as_view(),
-        name='send-anon-partner-email'),
 
 #    # Users
 #    url(r'^(?P<username>\w+)/',

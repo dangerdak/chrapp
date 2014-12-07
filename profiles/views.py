@@ -128,24 +128,19 @@ def send_update_email(request, to_profile_id, from_member_id):
                                         kwargs={'slug': from_member.giftgroup.slug}))
 
 
-class ContactView(FormView):
+class AnonContactView(FormView):
     template_name = 'contact.html'
     form_class = ContactForm
-    success_url = reverse_lazy('home')
 
     def form_valid(self, form):
-        form.send_email('santa', self.request.user.profile.recipient.user.email)
-        return super(ContactView, self).form_valid(form)
+        to_profile_id = self.kwargs['to_profile_id']
+        to_email = Profile.objects.get(id=to_profile_id).user.email
+        form.send_email('santa', to_email)
+        return super(AnonContactView, self).form_valid(form)
 
-
-class ContactPartnerView(FormView):
-    template_name = 'contact-partner.html'
-    form_class = ContactForm
-    success_url = reverse_lazy('home')
-
-    def form_valid(self, form):
-        form.send_email('santa cousin', self.request.user.profile.recipient.partner.santa.user.email)
-        return super(ContactPartnerView, self).form_valid(form)
+    def get_success_url(self):
+        # TODO better success_url
+        return reverse('home')
 
 
 class GroupCreateView(CreateView):
