@@ -3,7 +3,7 @@
 {% block content %}
 {% if user.is_authenticated %}
 	<h2>User: {{ profile.user.username }}</h2>
-	<p>My partner: {{ profile.partner }}</p>
+	<p>Partner: {{ profile.partner }}</p>
 {% endif %}
 
 <a href="{% url 'profile-update' %}">Edit</a>
