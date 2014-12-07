@@ -27,9 +27,12 @@
 					{% else %}
 						Nobody!!
 						{% if membership.admin %}
-							<a href="">Invite people</a>
+							<a href="{% url 'invite' slug=membership.giftgroup.slug %}">Invite people</a>
 						{% endif %}
 					{% endif %}
+						{% if membership.admin %}
+						<a href="{% url 'invite' slug=membership.giftgroup.slug %}">Invite more</a>
+						{% endif %}
 				</ul>
 			</li>
 			{% endfor %}
