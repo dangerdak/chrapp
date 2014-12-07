@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.models import User
+from django.db.models import Count
 
 from profiles.models import Profile, GiftGroup, Membership, Invitation
 from profiles.forms import ContactForm, GroupForm, InvitationFormSet, MembershipForm, MembershipPairedForm
@@ -230,4 +231,15 @@ class MembershipListView(ListView):
 
     def get_queryset(self):
         return Membership.objects.filter(
-            profile__user__username=self.request.user.username)
+            profile__user__username=self.request.user.username).annotate(
+                num_members=Count('giftgroup__members', distinct=True),
+                num_invites=Count('giftgroup__invitation', distinct=True))
+
+    def get_context_data(self, **kwargs):
+        context = super(MembershipListView, self).get_context_data(**kwargs)
+        for member in context['membership_list']:
+            print(member)
+            membership_count = member.giftgroup.members.count()
+            giftgroup = member.giftgroup
+            invitation_count = Invitation.objects.filter(gift_group=giftgroup)
+        return context

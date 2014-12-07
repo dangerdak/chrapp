@@ -11,14 +11,18 @@
 			{% for membership in membership_list %}
 			<li>
 				<a href="{% url 'membership-detail' slug=membership.giftgroup.slug %}">{{ membership.giftgroup.name }}</a>
-				{% if membership.admin %}(admin) <a href="{% url 'assign' slug=membership.giftgroup.slug %}">Assign pairs</a>{% endif %}<br>
-				Members:
+				{% if membership.admin %}(admin)
+				{% if membership.num_invites == membership.num_members %}
+				<a href="{% url 'assign' slug=membership.giftgroup.slug %}">Assign pairs</a>
+				{% endif %}<br>
+				{% endif %}
+				Members ({{ membership.num_members }}):
 				<ul>
 				{% for profile in membership.giftgroup.members.all %}
 					<li>{{ profile }}</li>
 				{% endfor %}
 				</ul>
-				Invited:
+				Invited ({{ membership.num_invites }}):
 				<ul>
 					{% if membership.giftgroup.invitation_set.all %}
 						{% for invite in membership.giftgroup.invitation_set.all %}
