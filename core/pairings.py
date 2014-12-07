@@ -21,8 +21,6 @@ class Weights:
             for avoid in user['fields']['avoid']:
                 row[users.index(avoid)] = Weight.negative
             for prefer in user['fields']['prefer']:
-                print('Prefer list', prefer)
-                print('Users list', users.users)
                 row[users.index(prefer)] = Weight.positive
             weights.append(row)
         self.weights = weights
