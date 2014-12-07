@@ -45,14 +45,22 @@ class MembershipDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(MembershipDetailView, self).get_context_data(**kwargs)
         member = context['membership']
-        if member.recipient and member.partner:
+        if member.recipient:
             # TODO what if partner is not in group?
-            partner_invite = Invitation.objects.get(id=member.partner.id)
-            partner_profile = Profile.objects.get(user__username=partner_invite.to_name)
-            context['recipient_partner_profile'] = partner_profile
-            if partner_profile in member.giftgroup.members.all():
-                partner_santa_profile = partner_profile.santa_memberships.get(giftgroup=member.giftgroup).profile
-                context['recipient_partner_santa_profile'] = partner_santa_profile
+            recipient_profile = member.recipient
+            recipient_membership = Membership.objects.get(
+                profile=recipient_profile, giftgroup=member.giftgroup)
+
+            if recipient_membership.partner:
+                recipient_partner_invite = recipient_membership.partner
+                recipient_partner_profile = Profile.objects.get(
+                    user__username=recipient_partner_invite.to_name)
+                context['recipient_partner_profile'] = recipient_partner_profile
+
+                if recipient_partner_profile in member.giftgroup.members.all():
+                    recipient_partner_santa_profile = recipient_partner_profile.santa_memberships.get(
+                        giftgroup=member.giftgroup).profile
+                    context['recipient_partner_santa_profile'] = recipient_partner_santa_profile
         return context
 
 
