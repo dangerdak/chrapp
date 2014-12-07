@@ -111,18 +111,21 @@ class MembershipUpdateView(UpdateView):
                       kwargs={'slug': self.kwargs['slug']})
         return url
 
-def send_update_email(request):
+def send_update_email(request, to_profile_id, from_member_id):
     """Send updated wishlist from recipient to santa."""
     subject = 'ChrApp: Updated wishlist'
-    message = 'Your secrect santa recipient, {}, has update their wishlist. It is now:'.format(request.user.username)
-    message += request.user.profile.wishlist
+    message = 'Your secrect santa recipient, {}, has update their wishlist. It is now: '.format(request.user.username)
+    from_member = Membership.objects.get(id=from_member_id)
+    message += from_member.wishlist
     from_email = request.user.email
-    to_email = request.user.profile.santa.user.email
+    to_profile = Profile.objects.get(id=to_profile_id)
+    to_email = to_profile.user.email
     try:
         send_mail(subject, message, from_email, [to_email])
     except BadHeaderError:
         return HttpResponse('Invalid header found.')
-    return HttpResponseRedirect(reverse('home'))
+    return HttpResponseRedirect(reverse('membership-detail',
+                                        kwargs={'slug': from_member.giftgroup.slug}))
 
 
 class ContactView(FormView):

@@ -1,33 +1,41 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Your Groups</h2>
-<ul>
-	{% for membership in membership_list %}
-	<li>
-		<a href="{% url 'membership-detail' slug=membership.giftgroup.slug %}">{{ membership.giftgroup.name }}</a>
-		{% if membership.admin %}(admin) <a href="{% url 'assign' slug=membership.giftgroup.slug %}">Assign pairs</a>{% endif %}<br>
-		Members:
+{% if user.is_authenticated %}
+	<h2>Your Groups</h2>
+	{% if membership_list %}
 		<ul>
-		{% for profile in membership.giftgroup.members.all %}
-			<li>{{ profile }}</li>
-		{% endfor %}
-		</ul>
-		Invited:
-		<ul>
-			{% if membership.giftgroup.invitation_set.all %}
-				{% for invite in membership.giftgroup.invitation_set.all %}
-					<li>{{ invite.to_name }} ({{ invite.to_email }})</li>
+			{% for membership in membership_list %}
+			<li>
+				<a href="{% url 'membership-detail' slug=membership.giftgroup.slug %}">{{ membership.giftgroup.name }}</a>
+				{% if membership.admin %}(admin) <a href="{% url 'assign' slug=membership.giftgroup.slug %}">Assign pairs</a>{% endif %}<br>
+				Members:
+				<ul>
+				{% for profile in membership.giftgroup.members.all %}
+					<li>{{ profile }}</li>
 				{% endfor %}
-			{% else %}
-				Nobody!!
-				{% if membership.admin %}
-					<a href="">Invite people</a>
-				{% endif %}
-			{% endif %}
+				</ul>
+				Invited:
+				<ul>
+					{% if membership.giftgroup.invitation_set.all %}
+						{% for invite in membership.giftgroup.invitation_set.all %}
+							<li>{{ invite.to_name }} ({{ invite.to_email }})</li>
+						{% endfor %}
+					{% else %}
+						Nobody!!
+						{% if membership.admin %}
+							<a href="">Invite people</a>
+						{% endif %}
+					{% endif %}
+				</ul>
+			</li>
+			{% endfor %}
 		</ul>
-	</li>
-	{% endfor %}
-</ul>
-<a href="">Create New Group</a>
+	{% else %}
+	<p>You have no groups!</p>
+	{% endif %}
+	<a href="">Create New Group</a>
+{% else %}
+	<h2>Hello stranger, welcome to ChrApp.</h2>
+{% endif %}
 {% endblock content %}

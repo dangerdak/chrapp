@@ -46,7 +46,7 @@ urlpatterns = patterns('',
         name='update-profile'),
 
     # Send email
-    url(r'^update-email/$',
+    url(r'^update-email/(?P<to_profile_id>\w+)/(?P<from_member_id>\w+)/$',
         'profiles.views.send_update_email',
         name='send-update-email'),
 

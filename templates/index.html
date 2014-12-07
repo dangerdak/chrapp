@@ -1,17 +1,32 @@
 {% extends 'base.html' %}
-
-
 {% block content %}
 {% if user.is_authenticated %}
-<h2>Welcome, {{ user.username }}.</h2>
-	{% if user.profile.membership_set.all %}
-	<h3>Your groups</h3>
-		{% for membership in user.profile.membership_set.all %}
-		<li>{{ membership.giftgroup.name }}</li>
+	<h2>Your groups</h2>
+	<ul>
+	{% if object_list %}
+		{% for group in object_list %}
+		<li>
+			<a href="{% url 'group-detail' slug=group.slug %}">{{ group.name }}</a>
+			(Memberships/Invites: {{ group.members.count }}/{{ group.invitation_set.count }})<br>
+			Members:
+			<ul>
+				{% for profile in group.members.all %}
+				<li>{{ profile.user.username }}{% if profile.membership.admin %}(admin){% endif %}</li>
+				{% endfor %}
+			</ul>
+			Invites:
+			<ul>
+				{% for invite in group.invitation_set.all %}
+				<li>{{ invite.to_name }} ({{invite.to_email}})</li>
+				{% endfor %}
+			</ul>
+		</li>
 		{% endfor %}
-	{% else %}
-	<p>Create a <a href="{% url 'create-group' %}">new group</a> to get started.</p>
-	{% endif %}
+		</ul>
+		{% else %}
+		<p>You have no groups!<p>
+		<p>Create a <a href="{% url 'create-group' %}">new group</a> to get started.</p>
+		{% endif %}
 {% else %}
 	<h2>Hello stranger, welcome to ChrApp.</h2>
 {% endif %}
