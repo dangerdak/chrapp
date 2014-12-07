@@ -3,77 +3,76 @@ import pytest
 from pairings import fill_recipients
 
 def test_optimal_solution():
-    user_data = [
-        {'name': 'Tom',
-         'partner': None,
-         'avoid': ['Dick'],
-         'prefer': ['Harry']},
-        {'name': 'Dick',
-         'partner': None,
-         'avoid': ['Harry'],
-         'prefer': ['Tom']},
-        {'name': 'Harry',
-         'partner': None,
-         'avoid': ['Tom'],
-         'prefer': ['Dick']},
+    user_data = [{'fields': {'profile': 'Tom',
+                             'partner': None,
+                             'avoid': ['Dick'],
+                             'prefer': ['Harry']}},
+                {'fields': {'profile': 'Dick',
+                            'partner': None,
+                            'avoid': ['Harry'],
+                            'prefer': ['Tom']}},
+                {'fields': {'profile': 'Harry',
+                            'partner': None,
+                            'avoid': ['Tom'],
+                            'prefer': ['Dick']}},
     ]
     fill_recipients(user_data)
     for user in user_data:
-        assert user['recipient'] == user['prefer'][0]
+        assert user['fields']['recipient'] == user['fields']['prefer'][0]
 
 def test_extra_fields():
     user_data = [
-        {'name': 'Tom',
-         'partner': None,
-         'magic': 'Bus',
-         'avoid': ['Dick'],
-         'prefer': ['Harry']},
-        {'name': 'Dick',
-         'partner': None,
-         'fatal': 'Book',
-         'avoid': ['Harry'],
-         'prefer': ['Tom']},
-        {'name': 'Harry',
-         'partner': None,
-         'ice': 'Cream',
-         'avoid': ['Tom'],
-         'prefer': ['Dick']},
+        {'fields': {'profile': 'Tom',
+                     'partner': None,
+                     'magic': 'Bus',
+                     'avoid': ['Dick'],
+                     'prefer': ['Harry']}},
+        {'fields': {'profile': 'Dick',
+                    'partner': None,
+                    'fatal': 'Book',
+                    'avoid': ['Harry'],
+                    'prefer': ['Tom']}},
+        {'fields': {'profile': 'Harry',
+                    'partner': None,
+                    'ice': 'Cream',
+                    'avoid': ['Tom'],
+                    'prefer': ['Dick']}},
     ]
     fill_recipients(user_data)
     for user in user_data:
-        assert user['recipient'] == user['prefer'][0]
+        assert user['fields']['recipient'] == user['fields']['prefer'][0]
 
 def test_forbidden():
     user_data = [
-        {'name': 'Tom',
-         'partner': 'Dick',
-         'avoid': ['Joe'],
-         'prefer': ['Harry']},
-        {'name': 'Dick',
-         'partner': 'Tom',
-         'avoid': ['Harry'],
-         'prefer': ['Joe']},
-        {'name': 'Harry',
-         'partner': None,
-         'avoid': ['Dick'],
-         'prefer': ['Tom']},
-        {'name': 'Joe',
-         'partner': None,
-         'avoid': ['Dick'],
-         'prefer': ['Harry']},
-        {'name': 'Douche',
-         'partner': None,
-         'avoid': ['Joe'],
-         'prefer': ['Dick']},
-        {'name': 'Princess',
-         'partner': None,
-         'avoid': ['Joe'],
-         'prefer': ['Dick']},
+        {'fields': {'profile': 'Tom',
+                     'partner': 'Dick',
+                     'avoid': ['Joe'],
+                     'prefer': ['Harry']}},
+         {'fields': {'profile': 'Dick',
+                     'partner': 'Tom',
+                     'avoid': ['Harry'],
+                     'prefer': ['Joe']}},
+         {'fields': {'profile': 'Harry',
+                     'partner': None,
+                     'avoid': ['Dick'],
+                     'prefer': ['Tom']}},
+         {'fields': {'profile': 'Joe',
+                     'partner': None,
+                     'avoid': ['Dick'],
+                     'prefer': ['Harry']}},
+         {'fields': {'profile': 'Douche',
+                     'partner': None,
+                     'avoid': ['Joe'],
+                     'prefer': ['Dick']}},
+         {'fields': {'profile': 'Princess',
+                     'partner': None,
+                     'avoid': ['Joe'],
+                     'prefer': ['Dick']}},
     ]
     fill_recipients(user_data)
     for user in user_data:
-        assert user['recipient'] != user['name']
-        assert user['recipient'] != user['partner']
+        assert user['fields']['recipient'] != user['fields']['profile']
+        assert user['fields']['recipient'] != user['fields']['partner']
 
 if __name__ == '__main__':
     pytest.main()
