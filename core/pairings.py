@@ -1,6 +1,5 @@
 '''Assign Santas to people.'''
 
-from pprint import pprint
 from random import choice
 from enum import Enum
 from itertools import permutations
@@ -76,33 +75,3 @@ def fill_recipients(user_data):
     solver = Solver(users)
     recipients = solver.solve()
     users.set_recipients(recipients)
-
-if __name__ == '__main__':
-    user_data = [
-        {'name': 'Tom',
-         'partner': 'Dick',
-         'avoid': ['Joe'],
-         'prefer': ['Harry']},
-        {'name': 'Dick',
-         'partner': 'Tom',
-         'avoid': ['Harry'],
-         'prefer': ['Joe']},
-        {'name': 'Harry',
-         'partner': None,
-         'avoid': ['Dick'],
-         'prefer': ['Tom']},
-        {'name': 'Joe',
-         'partner': None,
-         'avoid': ['Dick'],
-         'prefer': ['Harry']},
-        {'name': 'Douche',
-         'partner': None,
-         'avoid': ['Joe'],
-         'prefer': ['Dick']},
-        {'name': 'Princess',
-         'partner': None,
-         'avoid': ['Joe'],
-         'prefer': ['Dick']},
-    ]
-    fill_recipients(user_data)
-    pprint(user_data)
