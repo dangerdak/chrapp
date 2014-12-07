@@ -61,8 +61,8 @@ urlpatterns = patterns('',
     url(r'^groups/',
         include('profiles.urls')),
 
-    # Profiles
-    url(r'^profile/',
-        include('profiles.urls1')),
+#     # Profiles
+#     url(r'^profile/',
+#         include('profiles.urls1')),
 
 )
