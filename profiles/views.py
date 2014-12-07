@@ -86,6 +86,11 @@ class MembershipUpdateView(UpdateView):
         else:
             return MembershipForm
 
+    def get_form_kwargs(self):
+        kwargs = super(MembershipUpdateView, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+
     def get_success_url(self):
         url = reverse('membership-detail',
                       kwargs={'slug': self.kwargs['slug']})

@@ -24,6 +24,20 @@ class ContactForm(forms.Form):
 
 class MembershipForm(forms.ModelForm):
     """Membership form for before pairs have been assigned."""
+    avoid = forms.ModelMultipleChoiceField(queryset=None)
+    prefer = forms.ModelMultipleChoiceField(queryset=None)
+    partner = forms.ModelChoiceField(queryset=None)
+
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request')
+        super(MembershipForm, self).__init__(*args, **kwargs)
+        # Exclude current user from choice field querysets
+        invitations = Invitation.objects.exclude(to_name=self.request.user.username)
+        self.fields['avoid'].queryset = invitations
+        self.fields['prefer'].queryset = invitations
+        self.fields['partner'].queryset = invitations
+
     class Meta:
         model = Membership
         fields = ['wishlist', 'partner', 'avoid_partner', 'prefer', 'avoid']
