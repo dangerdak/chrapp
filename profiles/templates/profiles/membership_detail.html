@@ -3,13 +3,12 @@
 {% block content %}
 <h2>Your info for group {{ membership.giftgroup.name }}</h2>
 
-<p>Your wishlist: {{ membership.wishlist }}
-<a href="{% url 'update-membership' slug=membership.giftgroup.slug %}">Update</a>
-{% if membership.recipient %}
-	<a href="{% url 'send-update-email'  to_profile_id=membership.recipient.id from_member_id=membership.id %}">Send updated wishlist to Santa</a>
-{% endif %}
+<p>Your wishlist: {{ membership.wishlist }} <a href="{% url 'update-membership' slug=membership.giftgroup.slug %}">Update</a><br>
+
+Partner: {{ membership.partner }}<br>
 </p>
 {% if membership.recipient %}
+	<a href="{% url 'send-update-email'  to_profile_id=membership.recipient.id from_member_id=membership.id %}">Send updated wishlist to Santa</a>
 <hr>
 	<p>Your recipient: {{ membership.recipient.user.username }}</p>
 	<p>Your recipient's wishlist: {{ membership.wishlist}}</p>

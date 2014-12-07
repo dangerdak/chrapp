@@ -9,8 +9,9 @@ from django.contrib.auth.models import User
 from django.db.models import Count
 
 from profiles.models import Profile, GiftGroup, Membership, Invitation
-from profiles.forms import ContactForm, GroupForm, InvitationFormSet, MembershipForm, MembershipPairedForm
+from profiles.forms import ContactForm, GroupForm, InvitationFormSet, MembershipForm, MembershipPairedForm, ProfileForm
 from profiles.slugify import unique_slugify
+
 
 class ProfileDetailView(DetailView):
     model = Profile
@@ -18,54 +19,10 @@ class ProfileDetailView(DetailView):
     def get_object(self):
         return get_object_or_404(Profile, pk=self.request.user.profile.id)
 
-#class ProfileView(TemplateView):
-
-#     def get_context_data(self, **kwargs):
-#         context = super(ProfileView, self).get_context_data(**kwargs)
-#         if self.request.user.is_authenticated():
-#             context['username'] = self.request.user.username
-#             context['wishlist'] = self.request.user.profile.wishlist
-#             context['prefers'] = self.request.user.profile.prefer.all
-#             context['avoids'] = self.request.user.profile.avoid.all
-#             try:
-#                 context['santa'] = self.request.user.profile.santa
-#             except ObjectDoesNotExist:
-#                 context['santa'] = None
-# 
-#             if self.request.user.profile.partner:
-#                 context['partner'] = self.request.user.profile.partner
-#             else:
-#                 try:
-#                     context['partner'] = self.request.user.profile.partner_of
-#                 except ObjectDoesNotExist:
-#                     context['partner'] = None
-# 
-# 
-#             if self.request.user.profile.recipient:
-#                 recipient = self.request.user.profile.recipient
-#                 context['recipient'] = recipient
-#                 context['recipient_wishlist'] = recipient.wishlist
-#                 context['recipient_username'] = recipient.user.username
-# 
-#                 if self.request.user.profile.recipient.partner:
-#                     partner = self.request.user.profile.recipient.partner
-#                     context['recipient_partner'] = partner
-#                     context['recipient_partner_username'] = partner.user.username
-#                     context['recipient_partner_santa'] = partner.santa
-# 
-#                 else:
-#                     try:
-#                         partner = self.request.user.profile.recipient.partner_of
-#                         context['recipient_partner'] = partner
-#                         context['recipient_partner_username'] = partner.user.username
-#                         context['recipient_partner_santa'] = partner.santa
-#                     except ObjectDoesNotExist:
-#                         context['recipient_partner'] = None
-#         return context
-
 
 class ProfileUpdateView(UpdateView):
     fields = ['partner']
+    form_class = ProfileForm
 
     # Override this so view can be called without object id or slug
     def get_object(self):
@@ -88,15 +45,16 @@ class MembershipDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(MembershipDetailView, self).get_context_data(**kwargs)
         member = context['membership']
-        if member.recipient and member.recipient.partner:
+        if member.recipient and member.partner:
             # TODO what if partner is not in group?
-            partner_invite = Invitation.objects.get(id=member.recipient.partner.id)
+            partner_invite = Invitation.objects.get(id=member.partner.id)
             partner_profile = Profile.objects.get(user__username=partner_invite.to_name)
             context['recipient_partner_profile'] = partner_profile
             if partner_profile in member.giftgroup.members.all():
                 partner_santa_profile = partner_profile.santa_memberships.get(giftgroup=member.giftgroup).profile
                 context['recipient_partner_santa_profile'] = partner_santa_profile
         return context
+
 
 class GroupDetailView(DetailView):
     model = GiftGroup

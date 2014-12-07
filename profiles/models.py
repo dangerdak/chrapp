@@ -12,12 +12,6 @@ class Profile(models.Model):
     user = models.OneToOneField(User)
     slug = models.SlugField(unique=True)
 
-    # TODO This is not ideal
-    # Doesn't represent the relationship well (asymmetrical)
-    partner = models.OneToOneField('Invitation',
-                                   related_name='partner_of',
-                                   blank=True,
-                                   null=True)
 
     class Meta:
         permissions = (
@@ -99,8 +93,14 @@ class Membership(models.Model):
                                     null=True,
                                     help_text="You may still not be assigned any of these people.")
 
-    avoid_partner = models.BooleanField(default=False,
-                                        help_text="If you check this box, you will definitely not be assigned your partner.")
+    avoid_partner = models.BooleanField(default=False, help_text="If you check this box, you will definitely not be assigned your partner.")
+
+    # TODO This is not ideal
+    # Doesn't represent the relationship well (asymmetrical)
+    partner = models.OneToOneField('Invitation',
+                                   related_name='partner_of',
+                                   blank=True,
+                                   null=True)
 
     recipient = models.ForeignKey(Profile,
                                   related_name='santa_memberships',

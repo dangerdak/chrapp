@@ -8,7 +8,7 @@ from profiles.models import Profile, GiftGroup, Invitation, Membership
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ()
+        fields = []
 
 
 class ContactForm(forms.Form):
@@ -26,7 +26,7 @@ class MembershipForm(forms.ModelForm):
     """Membership form for before pairs have been assigned."""
     class Meta:
         model = Membership
-        fields = ['wishlist', 'avoid_partner', 'prefer', 'avoid']
+        fields = ['wishlist', 'partner', 'avoid_partner', 'prefer', 'avoid']
 
 
 class MembershipPairedForm(forms.ModelForm):
