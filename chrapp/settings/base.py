@@ -8,16 +8,27 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
+from django.core.exceptions import ImproperlyConfigured
+
+import os
 # Build paths inside the project like this: join(BASE_DIR, ...)
-from os.path import dirname, abspath, join
+from os.path import dirname, abspath, join, normpath
 BASE_DIR = dirname(dirname(dirname(abspath(__file__))))
 
+
+def get_env_variable(var_name):
+    """Get the environment variable or return exception."""
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = 'Set the %s environment variable.' % var_name
+        raise ImproperlyConfigured(error_msg)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'x0#$1i9b+y_b$2_=4z-hj3!&x#0!yq=tmbopt_u4&0g19+%t_t'
+SECRET_KEY = get_env_variable('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -73,7 +84,7 @@ WSGI_APPLICATION = 'chrapp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': join(BASE_DIR, 'db.sqlite3'),
+        'NAME': normpath(join(BASE_DIR, 'db.sqlite3')),
     }
 }
 
@@ -82,7 +93,7 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
 )
 TEMPLATE_DIRS = (
-    join(BASE_DIR, 'templates'),
+    normpath(join(BASE_DIR, 'templates')),
 )
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -101,7 +112,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 STATICFILES_DIRS = (
-    join(BASE_DIR, 'static'),
+    normpath(join(BASE_DIR, 'static')),
 )
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = normpath(join(BASE_DIR, 'assets'))
