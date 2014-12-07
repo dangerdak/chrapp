@@ -5,7 +5,9 @@
 
 <p>Your wishlist: {{ membership.wishlist }}
 <a href="{% url 'update-membership' slug=membership.giftgroup.slug %}">Update</a>
-<a href="{% url 'send-update-email'  to_profile_id=membership.recipient.id from_member_id=membership.id %}">Send updated wishlist to Santa</a>
+{% if membership.recipient %}
+	<a href="{% url 'send-update-email'  to_profile_id=membership.recipient.id from_member_id=membership.id %}">Send updated wishlist to Santa</a>
+{% endif %}
 </p>
 {% if membership.recipient %}
 <hr>
