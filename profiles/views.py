@@ -150,6 +150,13 @@ class AnonContactView(FormView):
         form.send_email('santa', to_email)
         return super(AnonContactView, self).form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super(AnonContactView, self).get_context_data(**kwargs)
+        to_profile_id = self.kwargs['to_profile_id']
+        to_profile = Profile.objects.get(id=to_profile_id)
+        context['to_profile'] = to_profile
+        return context
+
     def get_success_url(self):
         # TODO better success_url
         return reverse('home')
