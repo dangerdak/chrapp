@@ -7,13 +7,17 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.models import User
 
-from profiles.models import Profile, GiftGroup, Membership
+from profiles.models import Profile, GiftGroup, Membership, Invitation
 from profiles.forms import ContactForm, GroupForm, InvitationFormSet, MembershipForm, MembershipPairedForm
 from profiles.slugify import unique_slugify
 
+class ProfileDetailView(DetailView):
+    model = Profile
 
-class ProfileView(TemplateView):
-    template_name = 'index.html'
+    def get_object(self):
+        return get_object_or_404(Profile, pk=self.request.user.profile.id)
+
+#class ProfileView(TemplateView):
 
 #     def get_context_data(self, **kwargs):
 #         context = super(ProfileView, self).get_context_data(**kwargs)
@@ -60,7 +64,7 @@ class ProfileView(TemplateView):
 
 
 class ProfileUpdateView(UpdateView):
-    fields = ('wishlist', 'partner', 'avoid_partner', 'prefer', 'avoid')
+    fields = ['partner']
 
     # Override this so view can be called without object id or slug
     def get_object(self):
@@ -82,6 +86,14 @@ class MembershipDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(MembershipDetailView, self).get_context_data(**kwargs)
+        member = context['membership']
+        if member.recipient.partner:
+            # TODO what if partner is not in group?
+            partner_invite = Invitation.objects.get(id=member.recipient.partner.id)
+            partner_profile = Profile.objects.get(user__username=partner_invite.to_name)
+            context['recipient_partner_profile'] = partner_profile
+            partner_santa_profile = partner_profile.santa_memberships.get(giftgroup=member.giftgroup).profile
+            context['recipient_partner_santa_profile'] = partner_santa_profile
         return context
 
 class GroupDetailView(DetailView):

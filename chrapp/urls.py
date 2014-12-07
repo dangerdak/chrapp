@@ -3,8 +3,6 @@ from django.contrib import admin
 
 from profiles.views import (ProfileUpdateView,
                             AnonContactView,
-                            ContactPartnerView,
-                            ProfileView,
                             MembershipListView,
                             GroupCreateView)
 
@@ -62,5 +60,9 @@ urlpatterns = patterns('',
     # Groups
     url(r'^groups/',
         include('profiles.urls')),
+
+    # Profiles
+    url(r'^profile/',
+        include('profiles.urls1')),
 
 )

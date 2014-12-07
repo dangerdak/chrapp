@@ -2,6 +2,9 @@
 
 {% block content %}
 {% if user.is_authenticated %}
+	{% if user.profile.partner %}
+	<p>Your partner: {{ user.profile.partner }}</p>
+	{% endif %}
 	<h2>Your Groups</h2>
 	{% if membership_list %}
 		<ul>

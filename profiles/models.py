@@ -102,10 +102,10 @@ class Membership(models.Model):
     avoid_partner = models.BooleanField(default=False,
                                         help_text="If you check this box, you will definitely not be assigned your partner.")
 
-    recipient = models.OneToOneField(Profile,
-                                     related_name='santa',
-                                     blank=True,
-                                     null=True)
+    recipient = models.ForeignKey(Profile,
+                                  related_name='santa_memberships',
+                                  blank=True,
+                                  null=True)
 
     def __str__(self):
         return self.profile.user.username + 's membership in ' + self.giftgroup.name

@@ -5,18 +5,22 @@
 
 <p>Your wishlist: {{ membership.wishlist }}
 <a href="{% url 'update-membership' slug=membership.giftgroup.slug %}">Update</a>
-<a href="{% url 'send-update-email'  to_profile_id=membership.recipient.id from_member_id=membership.id %}">Email updated wishlist</a>
+<a href="{% url 'send-update-email'  to_profile_id=membership.recipient.id from_member_id=membership.id %}">Send updated wishlist to Santa</a>
 </p>
-<hr>
 {% if membership.recipient %}
-<p>Your recipient: {{ membership.recipient.user.username }}</p>
-<p>Your recipient's wishlist: {{ membership.wishlist}}</p>
-<a href="{% url 'send-anon-email' to_profile_id=membership.recipient.id %}">Email recipient</a>
+<hr>
+	<p>Your recipient: {{ membership.recipient.user.username }}</p>
+	<p>Your recipient's wishlist: {{ membership.wishlist}}</p>
+	<a href="{% url 'send-anon-email' to_profile_id=membership.recipient.id %}">Email {{ membership.recipient.user.username }}</a>
+	{% if recipient_partner_profile %}
+	<a href="{% url 'send-anon-email' to_profile_id=recipient_partner_profile.id %}">Email {{ membership.recipient.user.username }}'s partner</a>
+	<a href="{% url 'send-anon-email' to_profile_id=recipient_partner_santa_profile.id %}">Email {{ membership.recipient.user.username }}'s partner's Santa</a> (useful e.g. if they want a joint present)
+	{% endif %}
 {% else %}
-<p>
-Prefer: <ul>{% for prefer in membership.prefer.all %}<li>{{ prefer }}</li>{% endfor %}</ul>
-Avoid: <ul>{% for avoid in membership.avoid.all %}<li>{{ avoid }}</li>{% endfor %}</ul>
-Avoid partner? {% if membership.avoid_partner %}Yes{% else %}No{% endif %}
-</p>
+	<p>
+	Prefer: <ul>{% for prefer in membership.prefer.all %}<li>{{ prefer }}</li>{% endfor %}</ul>
+	Avoid: <ul>{% for avoid in membership.avoid.all %}<li>{{ avoid }}</li>{% endfor %}</ul>
+	Avoid partner? {% if membership.avoid_partner %}Yes{% else %}No{% endif %}
+	</p>
 {% endif %}
 {% endblock content %}

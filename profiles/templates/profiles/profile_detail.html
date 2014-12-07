@@ -3,14 +3,9 @@
 {% block content %}
 {% if user.is_authenticated %}
 	<h2>User: {{ profile.user.username }}</h2>
-	<p>My wishlist: {{ profile.wishlist }}</p>
-	{% if not profile.recipient %}
-		<ul>Prefer: {% for pref in profile.prefer.all %}<li>{{ pref }}</li>{% endfor %}</ul>
-		<ul>Avoid: {% for avoid in profile.avoid.all %}<li>{{ avoid }}</li>{% endfor %}</ul>
-	{% endif %}
+	<p>My partner: {{ profile.partner }}</p>
 {% endif %}
 
-<a href="{% url 'profile-update' slug=profile.slug %}">Update</a>
-<a href="{% url 'send-update-email' %}">Email updated wishlist</a>
+<a href="{% url 'profile-update' %}">Edit</a>
 
 {% endblock content %}
