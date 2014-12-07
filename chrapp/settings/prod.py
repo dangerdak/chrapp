@@ -31,6 +31,10 @@ DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# A tuple that lists people who get code error notifications.
+ADMINS = (('Dak', get_env_variable('ADMIN_EMAIL')),)
+
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'email@gmail.com'
