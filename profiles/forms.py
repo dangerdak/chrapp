@@ -54,7 +54,7 @@ class MembershipPairedForm(forms.ModelForm):
         # Pop so __init__ doesn't recieve unexpected kwargs
         self.request = kwargs.pop('request')
         self.membership = kwargs.pop('membership')
-        super(MembershipForm, self).__init__(*args, **kwargs)
+        super(MembershipPairedForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Membership
