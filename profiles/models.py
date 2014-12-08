@@ -103,10 +103,11 @@ class Membership(models.Model):
                                    blank=True,
                                    null=True)
 
-    recipient = models.ForeignKey(Profile,
-                                  related_name='santa_memberships',
-                                  blank=True,
-                                  null=True)
+    # TODO in future each profile can have more than one recipient
+    recipient = models.OneToOneField(Profile,
+                                     related_name='santa_membership',
+                                     blank=True,
+                                     null=True)
 
     def __str__(self):
         return self.profile.user.username + 's membership in ' + self.giftgroup.name
