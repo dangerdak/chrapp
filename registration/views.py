@@ -159,13 +159,13 @@ def invite(request, slug):
 
             return HttpResponseRedirect(reverse('home'))
     else:
-        previous_invites = Invitation.objects.all()
+        #previous_invites = Invitation.objects.all()
         formset = InviteFormSet(queryset=Invitation.objects.none())
         group = GiftGroup.objects.get(slug=slug)
 
     variables = RequestContext(request, {
         'formset': formset,
-        'previous_invites': previous_invites,
+        #'previous_invites': previous_invites,
         })
     return render_to_response('registration/friend_invites.html', variables)
 
