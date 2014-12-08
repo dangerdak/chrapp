@@ -42,7 +42,7 @@ class GiftGroup(models.Model):
 
 
 class Invitation(models.Model):
-    to_name = models.CharField(max_length=50)
+    to_name = models.CharField(max_length=50, unique=True)
     to_email = models.EmailField()
     sender = models.ForeignKey(User)
     key = models.CharField(max_length=20)
