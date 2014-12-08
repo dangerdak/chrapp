@@ -50,6 +50,7 @@ class MembershipDetailView(DetailView):
             recipient_profile = member.recipient
             recipient_membership = Membership.objects.get(
                 profile=recipient_profile, giftgroup=member.giftgroup)
+            context['recipient_membership'] = recipient_membership
 
             if recipient_membership.partner:
                 recipient_partner_invite = recipient_membership.partner
