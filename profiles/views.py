@@ -60,8 +60,7 @@ class MembershipDetailView(DetailView):
                 context['recipient_partner_profile'] = recipient_partner_profile
 
                 if recipient_partner_profile in member.giftgroup.members.all():
-                    recipient_partner_santa_profile = recipient_partner_profile.santa_memberships.get(
-                        giftgroup=member.giftgroup).profile
+                    recipient_partner_santa_profile = recipient_partner_profile.santa_membership.profile
                     context['recipient_partner_santa_profile'] = recipient_partner_santa_profile
         return context
 
