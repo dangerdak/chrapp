@@ -12,7 +12,7 @@ class ProfileForm(forms.ModelForm):
 
 
 class ContactForm(forms.Form):
-    subject = forms.CharField(max_length=100)
+    subject = forms.CharField(max_length=100, required=False)
     message = forms.CharField(widget=forms.Textarea)
 
     def send_email(self, from_email, to_email):
