@@ -11,7 +11,7 @@ Partner: {{ membership.partner }}<br>
 	<a href="{% url 'send-update-email'  to_profile_id=membership.recipient.id from_member_id=membership.id %}">Send updated wishlist to Santa</a>
 <hr>
 	<p>Your recipient: {{ membership.recipient.user.username }}</p>
-	<p>Your recipient's wishlist: {{ membership.wishlist}}</p>
+	<p>Your recipient's wishlist: {{ recipient_membership }}</p>
 	<a href="{% url 'send-anon-email' to_profile_id=membership.recipient.id %}">Email {{ membership.recipient.user.username }}</a>
 	{% if recipient_partner_profile %}
 	<a href="{% url 'send-anon-email' to_profile_id=recipient_partner_profile.id %}">Email {{ membership.recipient.user.username }}'s partner</a>
