@@ -16,8 +16,10 @@ class ContactForm(forms.Form):
     message = forms.CharField(widget=forms.Textarea)
 
     def send_email(self, from_email, to_email):
-        subject = self.cleaned_data['subject']
+        subject_prefix = '[ChrAppy] '
+        subject = subject_prefix + self.cleaned_data['subject']
         message = self.cleaned_data['message']
+        message += '\n\n(Please do not reply directly to this email - nobody will read it!)'
 
         send_mail(subject, message, from_email, [to_email])
 
