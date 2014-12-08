@@ -100,7 +100,7 @@ class MembershipUpdateView(UpdateView):
 
 def send_update_email(request, to_profile_id, from_member_id):
     """Send updated wishlist from recipient to santa."""
-    subject = 'ChrApp: Updated wishlist'
+    subject = 'ChrAppy: Updated wishlist'
     message = 'Your secrect santa recipient, {}, has update their wishlist. It is now: '.format(request.user.username)
     from_member = Membership.objects.get(id=from_member_id)
     message += from_member.wishlist

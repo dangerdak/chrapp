@@ -125,7 +125,7 @@ def user_login(request):
                 return HttpResponseRedirect('/')
             else:
                 # An inactive account was used
-                return HttpResponse("Your ChrApp account is disabled - please contact the site admin!")
+                return HttpResponse("Your ChrAppy account is disabled - please contact the site admin!")
         else:
             # Incorrect login details
             print("Invalid login details.")

@@ -52,7 +52,7 @@ class Invitation(models.Model):
         return self.to_name
 
     def send(self):
-        subject = '{} has invited you to join a Secret Santa group on ChrApp'.format(
+        subject = '{} has invited you to join a Secret Santa group on ChrAppy'.format(
             self.sender.username)
         # link = 'test'
         link = reverse('accept', args=[self.key])
