@@ -13,11 +13,15 @@ Partner: {{ membership.partner }}<br>
 	<p>Your recipient: {{ membership.recipient.user.username }}</p>
 	<p>Your recipient's wishlist: {{ recipient_membership.wishlist }}</p>
 	<a href="{% url 'send-anon-email' to_profile_id=membership.recipient.id %}">Email {{ membership.recipient.user.username }}</a>
+	All emails are anonymous - careful not to give away your identity to your gift recipient.
 	{% if recipient_partner_profile %}
 	<a href="{% url 'send-anon-email' to_profile_id=recipient_partner_profile.id %}">Email {{ membership.recipient.user.username }}'s partner</a>
 	{% endif %}
 	{% if recipient_partner_santa_profile %}
 	<a href="{% url 'send-anon-email' to_profile_id=recipient_partner_santa_profile.id %}">Email {{ membership.recipient.user.username }}'s partner's Santa</a> (useful e.g. if they want a joint present)
+	{% endif %}
+	{% if recipient_partner_profile or recipient_partner_santa_profile %}
+	But emails to other people might not be very useful unless you tell them who it's from, so that they can respond.
 	{% endif %}
 {% else %}
 	<p>
