@@ -25,7 +25,7 @@ class Profile(models.Model):
 
 
 class GiftGroup(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     members = models.ManyToManyField(Profile,
                                      blank=True,
                                      null=True,
