@@ -15,7 +15,7 @@
 			<li>
 				<a href="{% url 'membership-detail' slug=membership.giftgroup.slug %}">{{ membership.giftgroup.name }}</a>
 				{% if membership.admin %}(admin)
-				{% if membership.num_invites == membership.num_members %}
+				{% if membership.num_invites != 1 and membership.num_invites == membership.num_members %}
 				<a href="{% url 'assign' slug=membership.giftgroup.slug %}">Assign pairs</a>
 				{% endif %}<br>
 				{% endif %}
