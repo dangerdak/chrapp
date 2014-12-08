@@ -28,7 +28,11 @@ def get_env_variable(var_name):
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    '.chrappy.com',
+    'chrappy.com',
+    '127.0.0.1',
+]
 
 # A tuple that lists people who get code error notifications.
 ADMINS = (('Dak', get_env_variable('ADMIN_EMAIL')),)
