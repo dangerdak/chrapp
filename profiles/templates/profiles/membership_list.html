@@ -6,10 +6,10 @@
 	<p>Your partner: {{ user.profile.partner }}</p>
 	{% endif %}
 	<h2>Your Groups</h2>
+	{% if membership_list %}
 	<p>Click on a group name to see your details for that group, including your wishlist and gift recipient if one has been assigned.
 	Note that recipients can't be assigned until everyone invited to the group has joined.</p>
 
-	{% if membership_list %}
 		<ul>
 			{% for membership in membership_list %}
 			<li>
