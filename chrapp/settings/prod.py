@@ -31,6 +31,7 @@ DEBUG = False
 ALLOWED_HOSTS = [
     '.chrappy.com',
     'chrappy.com',
+    '127.0.0.1',
 ]
 
 # A tuple that lists people who get code error notifications.
