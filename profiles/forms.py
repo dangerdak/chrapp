@@ -29,6 +29,7 @@ class MembershipForm(forms.ModelForm):
     partner = forms.ModelChoiceField(queryset=None, required=False)
 
     def __init__(self, *args, **kwargs):
+        # Pop so __init__ doesn't recieve unexpected kwargs
         self.request = kwargs.pop('request')
         self.membership = kwargs.pop('membership')
         super(MembershipForm, self).__init__(*args, **kwargs)
@@ -48,6 +49,13 @@ class MembershipForm(forms.ModelForm):
 
 class MembershipPairedForm(forms.ModelForm):
     """Membership form for after pairs have been assigned."""
+
+    def __init__(self, *args, **kwargs):
+        # Pop so __init__ doesn't recieve unexpected kwargs
+        self.request = kwargs.pop('request')
+        self.membership = kwargs.pop('membership')
+        super(MembershipForm, self).__init__(*args, **kwargs)
+
     class Meta:
         model = Membership
         fields = ['wishlist']
