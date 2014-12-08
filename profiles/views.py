@@ -211,7 +211,6 @@ class MembershipListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(MembershipListView, self).get_context_data(**kwargs)
         for member in context['membership_list']:
-            print(member)
             membership_count = member.giftgroup.members.count()
             giftgroup = member.giftgroup
             invitation_count = Invitation.objects.filter(gift_group=giftgroup)
