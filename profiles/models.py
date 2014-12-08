@@ -59,7 +59,8 @@ class Invitation(models.Model):
         template = get_template('registration/invitation_email.txt')
         context = Context({
             'to_name': self.to_name,
-            'link': link,
+            # TODO shouldn't hardcode url??
+            'link': 'chrappy.com' + link,
             'sender': self.sender.username,
             'group': self.gift_group.name,
             })
