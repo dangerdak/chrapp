@@ -1,9 +1,12 @@
 Hi {{ to_name }},
 
 {{ sender }} has invited you to join the Secret Santa group {{ group }} on ChrAppy,
-a website which allows you to easily organise Secret Santa groups. It will one day anyway.
+a website which allows you to easily organise Secret Santa groups*.
+
 
 To accept the invitation, follow the link below:
 {{ link }}
 
 --- the ChrAppy Team
+
+*It will do one day, anyway. While every effort has been taken to test ChrAppy for normal use, it's still a fragile prototype so please don't try to push it's limits and also sorry if it breaks Christmas and we have to cancel.
