@@ -16,7 +16,7 @@ class Weights:
         for index, user in enumerate(users):
             row = len(users) * [Weight.neutral]
             row[index] = Weight.forbidden
-            if user['fields']['partner']:
+            if user['fields']['partner'] and user['fields']['avoid_partner']:
                 row[users.index(user['fields']['partner'])] = Weight.forbidden
             for avoid in user['fields']['avoid']:
                 row[users.index(avoid)] = Weight.negative
