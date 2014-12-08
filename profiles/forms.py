@@ -26,8 +26,14 @@ class ContactForm(forms.Form):
 
 class MembershipForm(forms.ModelForm):
     """Membership form for before pairs have been assigned."""
-    avoid = forms.ModelMultipleChoiceField(queryset=None, required=False)
-    prefer = forms.ModelMultipleChoiceField(queryset=None, required=False)
+    avoid = forms.ModelMultipleChoiceField(
+        queryset=None,
+        required=False,
+        help_text="You may still be assigned one of these people.")
+    prefer = forms.ModelMultipleChoiceField(
+        queryset=None,
+        required=False,
+        help_text="You may still not be assigned any of these people.")
     partner = forms.ModelChoiceField(queryset=None, required=False)
 
     def __init__(self, *args, **kwargs):
