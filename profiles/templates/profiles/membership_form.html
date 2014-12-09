@@ -5,6 +5,7 @@
 {% endblock extra_head %}
 {% block content %}
 <h2> Update your membership details for group {{ membership.giftgroup.name }}</h2>
+<p>Hint: if you want to add a <b>clickable link</b>, click on the world button, and then paste in the URL. You will then be asked for a link description, which will become the clickable text.</p>
 <form id="membership_form" method="post">
 	{% csrf_token %}
 	{{ form.as_p }}
