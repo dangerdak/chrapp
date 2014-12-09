@@ -1,9 +1,13 @@
+body {
+	width: 60%;
+	margin: auto;
+}
 .button {
 	display: inline-block;
 	text-decoration: none;
 	background-color: lightblue;
 	padding: 3px;
-	margin: 5px;
+	margin: 1em 0;
 	border: 2px solid blue;
 	border-radius: 2px;
 	box-sizing: border-box;
@@ -11,4 +15,9 @@
 
 .helptext {
 	color: grey;
+}
+
+.wishlist {
+	border: 2px solid lightblue;
+	padding: 0 1em;
 }
