@@ -5,7 +5,7 @@
 <h2>Your info for group {{ membership.giftgroup.name }}</h2>
 
 <p>Your wishlist: {{ membership.wishlist|markdown }}<br>
-<a href="{% url 'update-membership' slug=membership.giftgroup.slug %}">Update</a><br>
+<b><a href="{% url 'update-membership' slug=membership.giftgroup.slug %}">Update</a></b><br>
 
 Partner: {{ membership.partner }}<br>
 </p>
