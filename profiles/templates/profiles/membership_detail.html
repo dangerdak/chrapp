@@ -5,22 +5,22 @@
 <h2>Your info for group {{ membership.giftgroup.name }}</h2>
 
 <p>Your wishlist: {{ membership.wishlist|markdown }}<br>
-<b><a href="{% url 'update-membership' slug=membership.giftgroup.slug %}">Update</a></b><br>
+<a class="button" href="{% url 'update-membership' slug=membership.giftgroup.slug %}">Update</a><br>
 
 Partner: {{ membership.partner }}<br>
 </p>
 {% if membership.recipient %}
-	DON'T FORGET TO: <a href="{% url 'send-update-email'  to_profile_id=santa_membership.profile.id from_member_id=membership.id %}">Send updated wishlist to Santa</a>
+	DON'T FORGET TO: <a class="button" href="{% url 'send-update-email'  to_profile_id=santa_membership.profile.id from_member_id=membership.id %}">Send updated wishlist to Santa</a>
 <hr>
 	<p>Your recipient: {{ membership.recipient.user.username }}</p>
 	<p>Your recipient's wishlist: {{ recipient_membership.wishlist|markdown }}</p>
-	<a href="{% url 'send-anon-email' to_profile_id=membership.recipient.id %}">Email {{ membership.recipient.user.username }}</a>
+	<a class="button" href="{% url 'send-anon-email' to_profile_id=membership.recipient.id %}">Email {{ membership.recipient.user.username }}</a>
 	All emails are anonymous - careful not to give away your identity to your gift recipient.
 	{% if recipient_partner_profile %}
-	<a href="{% url 'send-anon-email' to_profile_id=recipient_partner_profile.id %}">Email {{ membership.recipient.user.username }}'s partner</a>
+	<a class="button" href="{% url 'send-anon-email' to_profile_id=recipient_partner_profile.id %}">Email {{ membership.recipient.user.username }}'s partner</a>
 	{% endif %}
 	{% if recipient_partner_santa_profile %}
-	<a href="{% url 'send-anon-email' to_profile_id=recipient_partner_santa_profile.id %}">Email {{ membership.recipient.user.username }}'s partner's Santa</a> (useful e.g. if they want a joint present)
+	<a class="button" href="{% url 'send-anon-email' to_profile_id=recipient_partner_santa_profile.id %}">Email {{ membership.recipient.user.username }}'s partner's Santa</a> (useful e.g. if they want a joint present)
 	{% endif %}
 	{% if recipient_partner_profile or recipient_partner_santa_profile %}
 	But emails to other people might not be very useful unless you tell them who it's from, so that they can respond.

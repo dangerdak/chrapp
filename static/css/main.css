@@ -1,4 +1,10 @@
-.recipient-info {
-	border: 3px solid black;
-	display: none;
+.button {
+	display: inline-block;
+	text-decoration: none;
+	background-color: lightblue;
+	padding: 3px;
+	margin: 5px;
+	border: 2px solid blue;
+	border-radius: 2px;
+	box-sizing: border-box;
 }
