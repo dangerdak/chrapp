@@ -4,6 +4,8 @@ from django.forms.models import inlineformset_factory
 
 from profiles.models import Profile, GiftGroup, Invitation, Membership
 
+from pagedown.widgets import PagedownWidget
+
 
 class ProfileForm(forms.ModelForm):
     class Meta:
@@ -35,6 +37,7 @@ class MembershipForm(forms.ModelForm):
         required=False,
         help_text="You may still not be assigned any of these people.")
     partner = forms.ModelChoiceField(queryset=None, required=False)
+    wishlist = forms.CharField(widget=PagedownWidget())
 
     def __init__(self, *args, **kwargs):
         # Pop so __init__ doesn't recieve unexpected kwargs
@@ -57,6 +60,7 @@ class MembershipForm(forms.ModelForm):
 
 class MembershipPairedForm(forms.ModelForm):
     """Membership form for after pairs have been assigned."""
+    wishlist = forms.CharField(widget=PagedownWidget())
 
     def __init__(self, *args, **kwargs):
         # Pop so __init__ doesn't recieve unexpected kwargs

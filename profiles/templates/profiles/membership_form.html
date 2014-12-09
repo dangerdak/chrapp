@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 
+{% block extra_head %}
+{{ form.media }}
+{% endblock extra_head %}
 {% block content %}
 <h2> Update your membership details for group {{ membership.giftgroup.name }}</h2>
 <form id="membership_form" method="post">

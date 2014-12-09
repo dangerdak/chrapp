@@ -53,6 +53,8 @@ INSTALLED_APPS = (
     'registration',
     'profiles',
     'pairings',
+    'pagedown',
+    'markdown_deux',
 )
 
 
@@ -121,3 +123,5 @@ STATICFILES_DIRS = (
 STATIC_URL = '/static/'
 
 STATIC_ROOT = normpath(join(BASE_DIR, 'assets'))
+
+PAGEDOWN_SHOW_PREVIEW = False
