@@ -31,10 +31,12 @@ class MembershipForm(forms.ModelForm):
     avoid = forms.ModelMultipleChoiceField(
         queryset=None,
         required=False,
+        widget=forms.CheckboxSelectMultiple,
         help_text="You may still be assigned one of these people.")
     prefer = forms.ModelMultipleChoiceField(
         queryset=None,
         required=False,
+        widget=forms.CheckboxSelectMultiple,
         help_text="You may still not be assigned any of these people.")
     partner = forms.ModelChoiceField(queryset=None, required=False)
     wishlist = forms.CharField(widget=PagedownWidget())
