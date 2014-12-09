@@ -1,2 +1,4 @@
 *.sqlite3
 settings/prod.py
+*.dump
+db.txt
