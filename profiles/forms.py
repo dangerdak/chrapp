@@ -32,12 +32,12 @@ class MembershipForm(forms.ModelForm):
         queryset=None,
         required=False,
         widget=forms.CheckboxSelectMultiple,
-        help_text="You may still be assigned one of these people.")
+        help_text="You may still be assigned a person who you've asked to avoid.")
     prefer = forms.ModelMultipleChoiceField(
         queryset=None,
         required=False,
         widget=forms.CheckboxSelectMultiple,
-        help_text="You may still not be assigned any of these people.")
+        help_text="You might not be assigned any of the people who you've preferred.")
     partner = forms.ModelChoiceField(queryset=None, required=False)
     wishlist = forms.CharField(widget=PagedownWidget())
 
