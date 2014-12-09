@@ -104,7 +104,11 @@ def send_update_email(request, to_profile_id, from_member_id):
     message = 'Your secrect santa recipient, {}, has update their wishlist. It is now: '.format(request.user.username)
     from_member = Membership.objects.get(id=from_member_id)
     message += from_member.wishlist
-    message += '\n\n(Please do not reply directly to this email - nobody will read it!)'
+    # TODO hardcoded domain name
+    wishlist_url = 'chrappy.com' + reverse(
+        'membership-detail', kwargs={'slug': from_member.giftgroup.slug})
+    message += '\n\nView on site: ' + wishlist_url
+    message += '\n(Please do not reply directly to this email - nobody will read it!)'
     from_email = request.user.email
     to_profile = Profile.objects.get(id=to_profile_id)
     to_email = to_profile.user.email
