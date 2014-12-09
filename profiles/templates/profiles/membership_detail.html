@@ -10,7 +10,7 @@
 Partner: {{ membership.partner }}<br>
 </p>
 {% if membership.recipient %}
-	DON'T FORGET TO: <a class="button" href="{% url 'send-update-email'  to_profile_id=santa_membership.profile.id from_member_id=membership.id %}">Send updated wishlist to Santa</a>
+<b>DON'T FORGET TO:</b> <a class="button" href="{% url 'send-update-email'  to_profile_id=santa_membership.profile.id from_member_id=membership.id %}">Send updated wishlist to Santa</a>
 <hr>
 	<p>Your recipient: {{ membership.recipient.user.username }}</p>
 	<p>Your recipient's wishlist: {{ recipient_membership.wishlist|markdown }}</p>
