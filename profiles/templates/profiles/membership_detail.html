@@ -4,7 +4,7 @@
 {% block content %}
 <h2>Your info for group {{ membership.giftgroup.name }}</h2>
 
-<p>Your wishlist: {{ membership.wishlist|markdown }}<br>
+<p>Your wishlist: {{ membership.wishlist|markdown }}
 <a class="button" href="{% url 'update-membership' slug=membership.giftgroup.slug %}">Update</a><br>
 
 Partner: {{ membership.partner }}<br>
