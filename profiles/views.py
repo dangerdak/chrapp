@@ -10,6 +10,7 @@ from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.models import User
 from django.db.models import Count
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 
 from profiles.models import Profile, GiftGroup, Membership, Invitation
 from profiles.forms import ContactForm, GroupForm, InvitationFormSet, MembershipForm, MembershipPairedForm, ProfileForm
@@ -72,8 +73,9 @@ class GroupDetailView(DetailView):
     model = GiftGroup
 
 
-class MembershipUpdateView(UpdateView):
+class MembershipUpdateView(SuccessMessageMixin, UpdateView):
     model = Membership
+    success_message = 'Your details have been updated.'
    # fields = ('wishlist', 'avoid_partner', 'prefer', 'avoid')
 
     # Override this so view can be called without object id or slug
@@ -133,7 +135,12 @@ class AnonContactView(FormView):
     def form_valid(self, form):
         to_profile_id = self.kwargs['to_profile_id']
         to_email = Profile.objects.get(id=to_profile_id).user.email
-        form.send_email('santa', to_email)
+        try:
+            form.send_email('santa', to_email)
+            messages.success(self.request, 'Email sent.')
+        except smtplib.SMTPException:
+            messages.error(self.request, 'An error occurred, email not sent.')
+
         return super(AnonContactView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
