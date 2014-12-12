@@ -144,8 +144,8 @@ class AnonContactView(FormView):
         return context
 
     def get_success_url(self):
-        # TODO better success_url
-        return reverse('home')
+        group_slug = self.kwargs['slug']
+        return reverse('membership-detail', kwargs={'slug': group_slug})
 
 
 class GroupCreateView(CreateView):

@@ -48,11 +48,6 @@ urlpatterns = patterns('',
         'profiles.views.send_update_email',
         name='send-update-email'),
 
-    # Send anonymous email
-    url(r'^anon-email/(?P<to_profile_id>\w+)/$',
-        AnonContactView.as_view(),
-        name='send-anon-email'),
-
 #    # Users
 #    url(r'^(?P<username>\w+)/',
 #        include('profiles.url')),

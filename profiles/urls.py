@@ -6,7 +6,9 @@ from profiles.views import (GroupCreateView,
                             GroupDetailView,
                             MembershipDetailView,
                             MembershipListView,
-                            MembershipUpdateView)
+                            MembershipUpdateView,
+                            AnonContactView,
+                            )
 
 urlpatterns = patterns('',
     # Group list view
@@ -48,5 +50,10 @@ urlpatterns = patterns('',
     url(r'^(?P<slug>\w+)/assign/$',
         'pairings.views.assign_pairs',
         name='assign'),
+
+    # Send anonymous email
+    url(r'^(?P<slug>\w+)/anon-email/(?P<to_profile_id>\w+)/$',
+        AnonContactView.as_view(),
+        name='send-anon-email'),
 
 )
