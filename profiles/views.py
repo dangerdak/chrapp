@@ -1,3 +1,5 @@
+import smtplib
+
 from django.views.generic import UpdateView, TemplateView, CreateView, ListView, DetailView
 from django.views.generic.edit import FormView
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -7,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.models import User
 from django.db.models import Count
+from django.contrib import messages
 
 from profiles.models import Profile, GiftGroup, Membership, Invitation
 from profiles.forms import ContactForm, GroupForm, InvitationFormSet, MembershipForm, MembershipPairedForm, ProfileForm
@@ -114,8 +117,11 @@ def send_update_email(request, to_profile_id, from_member_id):
     to_email = to_profile.user.email
     try:
         send_mail(subject, message, from_email, [to_email])
+        messages.success(request, "Your wishlist has been sent to Santa. I hope you've been good!")
     except BadHeaderError:
-        return HttpResponse('Invalid header found.')
+        messages.error(request, 'Invalid header found, email not sent.')
+    except smtplib.SMTPException:
+        messages.error(request, 'An error occurred, email not sent.')
     return HttpResponseRedirect(reverse('membership-detail',
                                         kwargs={'slug': from_member.giftgroup.slug}))
 
