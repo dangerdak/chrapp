@@ -20,9 +20,9 @@
 	{% endblock extra_css %}
 </head>
 <body>
-	<h1>
-		ChrAppy
-	</h1>
+	<header>
+	<img class="logo" src="{% static 'images/CHRAPPY.jpg' %}">
+	</header>
 	{% if messages %}
 		<ul class="messages">
 			{% for message in messages %}
