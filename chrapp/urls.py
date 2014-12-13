@@ -62,4 +62,4 @@ urlpatterns = patterns('',
 #     url(r'^profile/',
 #         include('profiles.urls1')),
 
-) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+)
