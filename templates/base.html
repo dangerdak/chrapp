@@ -23,6 +23,7 @@
 	<header>
 	<img class="logo" src="{% static 'images/CHRAPPY.jpg' %}">
 	</header>
+	<span id="clock"></span>
 	{% if messages %}
 		<ul class="messages">
 			{% for message in messages %}
@@ -30,7 +31,6 @@
 			{% endfor %}
 		</ul>
 	{% endif %}
-	<span id="clock"></span>
 	{% block content %}
 	{% endblock content %}
 	<footer>
