@@ -11,10 +11,18 @@ from django.contrib.auth.models import User
 from django.db.models import Count
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.decorators import login_required
 
 from profiles.models import Profile, GiftGroup, Membership, Invitation
 from profiles.forms import ContactForm, GroupForm, InvitationFormSet, MembershipForm, MembershipPairedForm, ProfileForm
 from profiles.slugify import unique_slugify
+
+
+class LoginRequiredMixin(object):
+    @classmethod
+    def as_view(cls, **initkwargs):
+        view = super(LoginRequiredMixin, cls).as_view(**initkwargs)
+        return login_required(view)
 
 
 class ProfileDetailView(DetailView):
@@ -37,7 +45,7 @@ class ProfileUpdateView(UpdateView):
         return url
 
 
-class MembershipDetailView(DetailView):
+class MembershipDetailView(LoginRequiredMixin, DetailView):
     model = Membership
 
     def get_object(self):

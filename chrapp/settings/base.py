@@ -125,3 +125,5 @@ STATIC_URL = '/static/'
 STATIC_ROOT = normpath(join(BASE_DIR, 'assets'))
 
 PAGEDOWN_SHOW_PREVIEW = False
+
+LOGIN_URL = '/login/'
