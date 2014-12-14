@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
+from django.contrib import messages
 
 
 from guardian.shortcuts import assign_perm
@@ -125,11 +126,13 @@ def user_login(request):
                 return HttpResponseRedirect('/')
             else:
                 # An inactive account was used
-                return HttpResponse("Your ChrAppy account is disabled - please contact the site admin!")
+                messages.error(request, "Your ChrAppy account is disabled - please contact the site admin!")
+                return HttpResponseRedirect(reverse('login'))
         else:
             # Incorrect login details
             print("Invalid login details.")
-            return HttpResponse("Invalid login details supplied.")
+            messages.error(request, "Invalid login details supplied. Note that both password and username are case sensitive.")
+            return HttpResponseRedirect(reverse('login'))
 
     # Request is not a POST so display login form
     else:
