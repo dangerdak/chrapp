@@ -55,6 +55,7 @@ INSTALLED_APPS = (
     'pairings',
     'pagedown',
     'markdown_deux',
+    'social.apps.django_app.default',
 )
 
 
@@ -69,8 +70,23 @@ MIDDLEWARE_CLASSES = (
 )
 
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',  # this is default
+    'social.backends.google.GoogleOAuth2',
     'guardian.backends.ObjectPermissionBackend',
+    'django.contrib.auth.backends.ModelBackend',  # this is default
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    # Default
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.core.context_processors.tz',
+    'django.contrib.messages.context_processors.messages',
+    # PSA context processors
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
 )
 
 ANONYMOUS_USER_ID = -1
