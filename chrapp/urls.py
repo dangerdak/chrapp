@@ -61,5 +61,12 @@ urlpatterns = patterns('',
 #     # Profiles
 #     url(r'^profile/',
 #         include('profiles.urls1')),
+    # Python social auth
+    url(r'',
+        include('social.apps.django_app.urls', namespace='social')),
+
+    # Django auth
+    url(r'',
+        include('django.contrib.auth.urls', namespace='auth')),
 
 )
