@@ -1,6 +1,14 @@
-body {
+html, body {
+	height: 100%;
+	width: 100%;
+}
+
+.content {
 	width: 60%;
-	margin: auto;
+	margin: 0;
+	display: inline-block;
+	position: relative;
+	left: 20%;
 }
 
 header .logo {
@@ -26,4 +34,22 @@ header .logo {
 .wishlist {
 	border: 2px solid lightblue;
 	padding: 0 1em;
+}
+
+.side-banner {
+	min-height: 100%;
+	width: 20%;
+	background-image: url('../images/chrappyborder.png');
+	background-repeat: repeat-y;
+	background-size: contain;
+	position: fixed;
+}
+
+.side-banner-left {
+	left: 0;
+}
+
+.side-banner-right {
+	right: 0;
+	top: 0;
 }
