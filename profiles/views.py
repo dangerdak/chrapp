@@ -165,7 +165,6 @@ class AnonContactView(FormView):
 
 class GroupCreateView(CreateView):
     model = GiftGroup
-    fields = ['name']
     form_class = GroupForm
     success_url = reverse_lazy('membership-list')
 
