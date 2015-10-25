@@ -23,5 +23,12 @@ Python
 
 Chrapp
 ------
-    SECRET_KEY=42 DJANGO_SETTINGS_MODULE=chrapp.settings.local DB_USER=chrapp DB_PASSWORD=chrapp python manage.py migrate 
-    SECRET_KEY=42 DJANGO_SETTINGS_MODULE=chrapp.settings.local DB_USER=chrapp DB_PASSWORD=chrapp python manage.py runserver --settings=chrapp.settings.local
+    export SECRET_KEY=42 DJANGO_SETTINGS_MODULE=chrapp.settings.local DB_USER=chrapp DB_PASSWORD=chrapp
+    python manage.py migrate
+    python manage.py runserver --settings=chrapp.settings.local
+    python manage.py runserver shell_plug
+    >>> from django.contrib.sites.models import Site
+    >>> one = Site.objects.all()[0]
+    >>> one.domain = 'chrappy.com'
+    >>> one.name = 'chrappy'
+    >>> one.save()
