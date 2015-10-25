@@ -5,6 +5,7 @@ from django.template.loader import get_template
 from django.template import Context
 from django.core.urlresolvers import reverse
 
+from registration.signals import user_activated
 from profiles.slugify import unique_slugify
 
 
@@ -22,6 +23,13 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+def save_profile(sender, user, request, **kwargs):
+    """ Create profile for new users """
+    profile = Profile(user=user)
+    profile.save()
+
+user_activated.connect(save_profile)
 
 
 class GiftGroup(models.Model):
