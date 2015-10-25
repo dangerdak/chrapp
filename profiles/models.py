@@ -42,7 +42,7 @@ class GiftGroup(models.Model):
 
 
 class Invitation(models.Model):
-    to_name = models.CharField(max_length=50, unique=True)
+    to_name = models.CharField(max_length=50)
     to_email = models.EmailField()
     sender = models.ForeignKey(User)
     key = models.CharField(max_length=20)
@@ -77,6 +77,7 @@ class Membership(models.Model):
     profile = models.ForeignKey(Profile)
     giftgroup = models.ForeignKey(GiftGroup)
 
+    # Is the associated profile an admin for the associatd group?
     admin = models.BooleanField(default=False)
     wishlist = models.TextField(blank=True)
 
