@@ -6,7 +6,8 @@ from django.conf.urls.static import static
 from profiles.views import (ProfileUpdateView,
                             AnonContactView,
                             MembershipListView,
-                            GroupCreateView)
+                            GroupCreateView,
+                            send_update_email)
 
 
 urlpatterns = patterns('',
@@ -17,25 +18,25 @@ urlpatterns = patterns('',
         MembershipListView.as_view(),
         name='home'),
 
-    url(r'^register/$',
-        'registration.views.register',
-        name='register'),
-
-    url(r'^login/$',
-        'registration.views.user_login',
-        name='login'),
-
-    url(r'^logout/$',
-        'registration.views.user_logout',
-        name='logout'),
-
-#    url(r'^invite/$',
-#        'registration.views.invite',
-#        name='invite'),
-
-    url(r'^accept/(\w+)/$',
-        'registration.views.accept',
-        name='accept'),
+#    url(r'^register/$',
+#        'registration.views.register',
+#        name='register'),
+#
+#    url(r'^login/$',
+#        'registration.views.user_login',
+#        name='login'),
+#
+#    url(r'^logout/$'mpty regex,
+#        'registration.views.user_logout',
+#        name='logout'),
+#
+##    url(r'^invite/$',
+##        'registration.views.invite',
+##        name='invite'),
+#
+#    url(r'^accept/(\w+)/$',
+#        'registration.views.accept',
+#        name='accept'),
 
     url(r'^admin/',
         include(admin.site.urls)),
@@ -45,9 +46,14 @@ urlpatterns = patterns('',
         ProfileUpdateView.as_view(),
         name='update-profile'),
 
+#    # Send email
+#    url(r'^update-email/(?P<to_profile_id>\w+)/(?P<from_member_id>\w+)/$',
+#        'profiles.views.send_update_email',
+#        name='send-update-email'),
+
     # Send email
     url(r'^update-email/(?P<to_profile_id>\w+)/(?P<from_member_id>\w+)/$',
-        'profiles.views.send_update_email',
+        send_update_email,
         name='send-update-email'),
 
 #    # Users
@@ -61,5 +67,8 @@ urlpatterns = patterns('',
 #     # Profiles
 #     url(r'^profile/',
 #         include('profiles.urls1')),
+
+    url(r'^',
+        include('registration.backends.default.urls')),
 
 )

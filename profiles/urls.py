@@ -26,10 +26,10 @@ urlpatterns = patterns('',
         GroupUpdateView.as_view(),
         name='update-group'),
 
-    # Group invite view
-    url(r'^(?P<slug>\w+)/invite/$',
-        'registration.views.invite',
-        name='invite'),
+#    # Group invite view
+#    url(r'^(?P<slug>\w+)/invite/$',
+#        'registration.views.invite',
+#        name='invite'),
 
 #    # Group detail view
 #    url(r'^(?P<slug>\w+)/$',

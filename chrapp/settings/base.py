@@ -39,18 +39,21 @@ ALLOWED_HOSTS = []
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+SITE_ID = 1
+
 # Application definition
 
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'registration',
     'django_extensions',
     'guardian',
-    'registration',
     'profiles',
     'pairings',
     'pagedown',
@@ -127,3 +130,9 @@ STATIC_ROOT = normpath(join(BASE_DIR, 'assets'))
 PAGEDOWN_SHOW_PREVIEW = False
 
 LOGIN_URL = '/login/'
+
+# Registration settings
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
+ACCOUNT_ACTIVATION_DAYS = 7
